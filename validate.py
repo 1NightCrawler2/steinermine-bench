@@ -412,6 +412,53 @@ def validate_publication(rep: Report) -> None:
                   f"{', '.join(sorted(set(found)))} -- fill these in before "
                   f"minting a DOI")
 
+    # Every place that states a version must state the SAME one.
+    #
+    # This shipped wrong: spec.py said 2.1.0, instances/*/metadata.json said
+    # 2.0.0, references said 2.1.0, and .zenodo.json and CITATION.cff both said
+    # 1.0.0 -- four numbers for one dataset, past 3512 passing checks, because
+    # nothing compared them.  A version is the one field a reader uses to say
+    # which data they have, so a disagreement here is not cosmetic.
+    import json as _json
+    declared = spec.BENCHMARK_VERSION
+    zen = ROOT / ".zenodo.json"
+    if zen.exists():
+        try:
+            zv = _json.loads(zen.read_text(encoding="utf-8")).get("version")
+            rep.check(zv == declared,
+                      f"publication: .zenodo.json version {zv!r} != "
+                      f"spec.BENCHMARK_VERSION {declared!r}")
+        except _json.JSONDecodeError:
+            rep.check(False, "publication: .zenodo.json is not valid JSON")
+    cff = ROOT / "CITATION.cff"
+    if cff.exists():
+        # Scanned line by line rather than by regex: this block was first
+        # written with a regex whose escapes did not survive being generated,
+        # producing a file that would not even parse. A version line is a
+        # trivial parse; it does not need a pattern.
+        got = None
+        for line in cff.read_text(encoding="utf-8").splitlines():
+            if line.startswith("version:"):
+                got = line.split(":", 1)[1].strip().strip('"').strip("'")
+                break
+        rep.check(got == declared,
+                  f"publication: CITATION.cff version {got!r} != "
+                  f"spec.BENCHMARK_VERSION {declared!r}")
+    # The frozen artefacts must agree too -- they are what a user actually reads.
+    for iid in spec.INSTANCE_IDS:
+        for fname, key in (("metadata.json", "benchmark_version"),
+                           ("reference.json", "benchmark_version")):
+            fp = ROOT / "instances" / iid / fname
+            if not fp.exists():
+                continue
+            try:
+                got = _json.loads(fp.read_text(encoding="utf-8")).get(key)
+            except _json.JSONDecodeError:
+                continue
+            rep.check(got == declared,
+                      f"publication: {iid}/{fname} {key} {got!r} != "
+                      f"spec.BENCHMARK_VERSION {declared!r}")
+
 
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(

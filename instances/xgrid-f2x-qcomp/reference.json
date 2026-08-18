@@ -1,7 +1,7 @@
 {
   "instance_id": "xgrid-f2x-qcomp",
-  "schema_version": "2.1",
-  "benchmark_version": "2.1.0",
+  "schema_version": "1.0",
+  "benchmark_version": "1.0.0",
   "reference_type": "best_known",
   "reference_type_raw": "best_known",
   "reference_type_constrained": "best_known",

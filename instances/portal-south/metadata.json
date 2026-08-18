@@ -1,7 +1,7 @@
 {
   "instance_id": "portal-south",
-  "schema_version": "2.0",
-  "benchmark_version": "2.0.0",
+  "schema_version": "1.0",
+  "benchmark_version": "1.0.0",
   "synthetic": true,
   "provenance_statement": "SYNTHETIC DATA. This instance is procedurally generated from the seed and parameters recorded in metadata.generation. The rock mass quality field, fault geometry, topography, portal and production-zone locations were constructed to be geotechnically representative of a hard-rock underground operation, using the published NGI Barton Q-system support classes. They are NOT derived from, measured at, or descriptive of any real or operating mine, and the coordinate frame is a neutral local origin with no geographic meaning.",
   "grid": {
@@ -421,7 +421,7 @@
   "generation": {
     "seed": 42202,
     "seed_note": "The seed is keyed on (q_regime, fault_system), not on the instance id, so every instance sharing a geology -- the whole portal sweep, the whole zone-count sweep and all four scale rungs -- samples an identical rock mass.",
-    "generator_version": "2.0.0",
+    "generator_version": "1.0.0",
     "generator_command": "python generate.py --only portal-south",
     "shipped_in_git": true,
     "created_utc": "2026-08-04T08:16:25Z"

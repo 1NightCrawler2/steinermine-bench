@@ -1,7 +1,7 @@
 {
   "instance_id": "scale-8m",
-  "schema_version": "2.1",
-  "benchmark_version": "2.1.0",
+  "schema_version": "1.0",
+  "benchmark_version": "1.0.0",
   "reference_type": "unsolved",
   "objective": "Total raw voxel cost of a portal-rooted, monotonically descending network reaching every production zone, with edge weight w(u,v) = (cost_grid[v] + excavation_rate_per_m) * effective_length_m(u,v) over the 26-neighbourhood. Excludes buildability post-processing, operating cost and portal establishment.",
   "reference_cost": null,

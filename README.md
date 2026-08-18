@@ -11,37 +11,36 @@ underground mine ramp network design problem.
 inputs and report an optimality gap that means something. The two instances with no reference
 solution still carry a bound.
 
-> ### v2.0.0 changes what is scored
+> ### Why `constrained` is the normative track
 >
-> v1 scored the pure voxel Steiner cost. Measured on v1's own reference solutions, **100 % of
-> descending steps exceed a 20 % grade limit and the median step grade is 100 % (45°)** — that
-> objective is the optimum of a *relaxation* which admits geometry no ramp can be built to, and
-> re-ranking the solved instances on buildable cost flips the winning family on **15 of 23**.
+> The obvious objective — pure voxel Steiner cost — is the optimum of a *relaxation* that admits
+> geometry no ramp can be built to. Measured on solutions optimal for it, **100 % of descending
+> steps exceed a 20 % grade limit and the median step grade is 100 % (45°)**, and re-ranking the
+> solved instances on buildable cost flips the winning family on **15 of 23**.
 >
-> So v2 makes **`constrained`** the normative track: cost integrated along a centreline that
-> satisfies a stated geometric standard, re-checked by a **verifier shipped with the suite**
-> (`steinerbench/buildable_check.py`, numpy only — no solver required). The v1 `raw` objective is
-> retained **bit-for-bit** as a diagnostic, because it is exactly reproducible and because the gap
-> between it and a buildable answer is itself a result.
+> So **`constrained`** is normative here: cost integrated along a centreline that satisfies a stated
+> geometric standard, re-checked by a **verifier shipped with the suite**
+> (`steinerbench/buildable_check.py`, numpy only — no solver required). The relaxation is retained
+> as the **`raw`** diagnostic track, because it is exactly reproducible and because the gap between
+> it and a buildable answer is itself a result.
 >
-> A third **`total`** track adds life-of-mine haulage, and a new **Group E** varies tonnage across
-> the point where the cheapest topology changes. v1 could not express that: with a capex-only
-> objective, the capex:opex trade-off is invisible.
+> A third **`total`** track adds life-of-mine haulage, and **Group E** varies tonnage across the
+> point where the cheapest topology changes — a capex-only objective cannot express that trade-off.
 
-> ### v2.1.0 changes what the gap means
+> ### Why each track carries its own bound
 >
-> v2.0.0 reported one lower bound — the relaxation bound — against every track. On the normative
-> `constrained` track that read **+200 % to +340 %**, and nearly all of it was the relaxation being
-> irrelevant rather than any search being poor. v2.1.0 bounds each track with something valid *for
-> that track*: `raw` keeps the relaxation bound, while `constrained` and `total` add a **geometric
-> floor** derived from the grade limit itself. Mean constrained gap: **245 % → 113 %**.
+> Bounding every track with the relaxation bound reads **+200 % to +340 %** on the normative
+> `constrained` track, and nearly all of that is the relaxation being irrelevant rather than any
+> search being poor. Each track is therefore bounded by something valid *for that track*: `raw`
+> keeps the relaxation bound, while `constrained` and `total` add a **geometric floor** derived from
+> the grade limit itself, which needs no search. Mean constrained gap under the per-track bounds:
+> **113 %**, against 245 % when the relaxation bound was used throughout.
 >
-> Three defects in the `total` track were found and fixed in the process, all of which made v2.0.0
-> total figures unreproducible from the bundle: operating cost was measured on the **raw** voxel
-> network while the capex charged was the **constrained** one; the published `opex_model` rates were
-> never actually applied by the solver; and a $1.5 M per-portal establishment charge was included but
-> never declared. **v2.0.0 `total` figures are superseded.** `raw` and `constrained` costs are
-> unaffected, and all 28 grids still reproduce bit-for-bit against the 2.0.0 checksums.
+> Three defects in the `total` track were found and fixed while building this: operating cost was
+> measured on the **raw** voxel network while the capex charged was the **constrained** one; the
+> published `opex_model` rates were not actually applied by the solver; and a $1.5 M per-portal
+> establishment charge was included but never declared. All three are corrected in the figures
+> published here.
 
 > ### All data here is synthetic
 >
@@ -269,7 +268,7 @@ only compares families present in both reference and submission.
 ## Reference solutions and what `exact` means
 
 `reference_type` is now reported **per track**, because the labels mean different things on each.
-`reference_type_raw` keeps the v1 semantics below. `reference_type_constrained` is **always
+`reference_type_raw` keeps the relaxation semantics below. `reference_type_constrained` is **always
 `best_known`** — the constrained geometry is planned by a heading-augmented A\* with junction
 iteration, which is heuristic, so nothing on that track is provably optimal and claiming otherwise
 would be an overclaim. Where a rung is too coarse to carry constrained geometry it reads
@@ -338,8 +337,8 @@ constrained track are different problems:
 | `constrained` | `max(` pairwise divergence, geometric grade floor `)` | keeps the constraint that dominates the cost |
 | `total` | the same, plus floors on haulage, ventilation and portal establishment | bounds every term the track charges |
 
-The change from v2.0.0 — which reported the relaxation bound against every track — cuts the mean
-constrained gap from **245 % to 113 %**.
+Bounding each track with something valid for that track, rather than reporting the relaxation
+bound against all three, cuts the mean constrained gap from **245 % to 113 %**.
 
 #### The relaxation bound (raw track)
 
@@ -410,9 +409,9 @@ built. `geometric_bound.track_bound` raises if you try, and `validate.py` fails 
 shows it. That the relaxation optimum sits *below* a valid floor for the real problem is the
 sharpest single statement of why the relaxation is the wrong objective.
 
-#### Withdrawn in v2.1.0: Wong dual ascent
+#### Not offered: Wong dual ascent
 
-v2.0.0 also offered `--dual-ascent` (the classical LP-dual bound for directed Steiner
+An earlier build offered `--dual-ascent` (the classical LP-dual bound for directed Steiner
 arborescence). It is gone. Dual ascent grows its root component one zero-reduced-cost arc at a
 time, and on a 26-connected lattice with millions of near-parallel arcs each step is worth a few
 dollars: on `portal-north`, 30,000 iterations over ~85 minutes reached $1.61 M against the *free*
@@ -467,7 +466,7 @@ verifier against the shipped grid, so the track does **not** depend on your post
 ours. A network that fails any of the five checks has no constrained cost; it is not scored at a
 higher number, it is recorded as infeasible.
 
-**`raw`** (diagnostic) is the v1 objective, unchanged and bit-for-bit reproducible: pure voxel
+**`raw`** (diagnostic) is the relaxation objective, bit-for-bit reproducible: pure voxel
 Steiner cost under monotone descent and nothing else. It is no longer normative for the reason in
 the banner at the top — it is the optimum of a relaxation. It is kept because it is exactly
 reproducible without any geometry code, because it is what most of the literature optimises, and
@@ -482,8 +481,9 @@ can make a branch point pay.
 
 A cost is only reported on the constrained or total track if the geometry was planned under the
 standard **and** passed the verifier. Several families produce a `cost_buildable` figure from a
-geometric post-processor without ever being shown constructible; v1 shipped those as if they were
-comparable, and separating them is much of what v2 is.
+geometric post-processor without ever being shown constructible. Treating those as comparable
+would conflate a planned network with an estimated one, and separating them is much of what this
+suite is for.
 
 ### Negative gaps
 

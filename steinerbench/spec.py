@@ -26,12 +26,12 @@ All lengths in metres (m); all costs in US dollars per metre ($/m);
 
 from __future__ import annotations
 
-BENCHMARK_VERSION = "2.1.0"
-SCHEMA_VERSION = "2.1"
+BENCHMARK_VERSION = "1.0.0"
+SCHEMA_VERSION = "1.0"
 #: Unchanged at 2.0.0 on purpose: v2.1.0 alters no grid, no terminal set and no
 #: cost grid, so every instance still reproduces bit-for-bit under
 #: ``generate.py --check`` against the 2.0.0 checksums.
-GENERATOR_VERSION = "2.0.0"
+GENERATOR_VERSION = "1.0.0"
 
 # ---------------------------------------------------------------------------
 # What changed in 2.0.0, and why
