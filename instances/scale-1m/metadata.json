@@ -1,0 +1,444 @@
+{
+  "instance_id": "scale-1m",
+  "schema_version": "2.0",
+  "benchmark_version": "2.0.0",
+  "synthetic": true,
+  "provenance_statement": "SYNTHETIC DATA. This instance is procedurally generated from the seed and parameters recorded in metadata.generation. The rock mass quality field, fault geometry, topography, portal and production-zone locations were constructed to be geotechnically representative of a hard-rock underground operation, using the published NGI Barton Q-system support classes. They are NOT derived from, measured at, or descriptive of any real or operating mine, and the coordinate frame is a neutral local origin with no geographic meaning.",
+  "grid": {
+    "dims": [
+      126,
+      82,
+      100
+    ],
+    "cell_size_m": 5.0,
+    "min_coords_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "domain_size_m": [
+      630.0,
+      410.0,
+      500.0
+    ],
+    "axis_order": [
+      "EAST",
+      "NORTH",
+      "RL"
+    ],
+    "z_positive": "up",
+    "world_from_voxel": "world_m = min_coords_m + (ijk + 0.5) * cell_size_m",
+    "sentinel_cost_per_m": 1000000000.0,
+    "sentinel_tier_index": 255,
+    "passable_test": "cost_per_m < 0.9 * sentinel_cost_per_m",
+    "n_voxels": 1033200,
+    "n_passable": 914913,
+    "passable_fraction": 0.8855139372822299
+  },
+  "cost_model": {
+    "objective": "Minimise the total cost of a portal-rooted, monotonically descending network connecting the portal to every production zone, on a 26-connected voxel graph.",
+    "tier_schedule": [
+      {
+        "tier_index": 0,
+        "q_min_exclusive": 0.0,
+        "q_max_inclusive": 0.04,
+        "cost_per_m": 7585.4,
+        "support_class": "Exceptionally poor (Q<0.04): steel sets + shotcrete + spiling"
+      },
+      {
+        "tier_index": 1,
+        "q_min_exclusive": 0.04,
+        "q_max_inclusive": 0.1,
+        "cost_per_m": 5679.5,
+        "support_class": "Extremely poor (Q 0.04-0.10): heavy systematic bolt+mesh+shotcrete"
+      },
+      {
+        "tier_index": 2,
+        "q_min_exclusive": 0.1,
+        "q_max_inclusive": 0.34,
+        "cost_per_m": 4460.9,
+        "support_class": "Very poor (Q 0.10-0.34): systematic bolt+mesh+shotcrete"
+      },
+      {
+        "tier_index": 3,
+        "q_min_exclusive": 0.34,
+        "q_max_inclusive": 1.181,
+        "cost_per_m": 3059.0,
+        "support_class": "Poor (Q 0.34-1.18): systematic bolting + shotcrete"
+      },
+      {
+        "tier_index": 4,
+        "q_min_exclusive": 1.181,
+        "q_max_inclusive": 6.0,
+        "cost_per_m": 1806.9,
+        "support_class": "Fair (Q 1.18-6.0): spot bolting"
+      },
+      {
+        "tier_index": 5,
+        "q_min_exclusive": 6.0,
+        "q_max_inclusive": null,
+        "cost_per_m": 1111.9,
+        "support_class": "Good (Q>6.0): unsupported / spot bolting"
+      }
+    ],
+    "fault_single_floor_per_m": 3059.0,
+    "fault_multi_floor_per_m": 4460.9,
+    "fault_floor_rule": "cost_per_m = max(tier_cost, floor), where floor is fault_single_floor_per_m for voxels intersecting exactly one distinct fault and fault_multi_floor_per_m for two or more. The fault damage halo is specified in METRES (faults[].damage_half_width_m) and no voxel dilation is applied, so the fault footprint is identical at every cell size. This differs deliberately from the MineOptimizer production pipeline, which widens the floor with a 3x3x3 VOXEL dilation and is therefore resolution dependent.",
+    "excavation_rate_per_m": 1000.0,
+    "excavation_rate_in_grid": false,
+    "edge_weight_formula": "w(u,v) = (cost_grid[v] + excavation_rate_per_m) * effective_length_m(u,v)",
+    "segment_direction_convention": "The edge weight charges the voxel being ENTERED, so a segment's cost depends on which way it is traversed. The convention, which every reference cost in this benchmark follows, is: each segment is costed as the shortest-path distance FROM ITS OWN TERMINAL TO THE JUNCTION. The portal ramp is therefore costed portal -> junction over descent arcs (dz <= 0); a horizontal crosscut is costed zone -> junction over dz == 0 arcs; and a 3-D drive is costed zone -> junction over ascent arcs (dz >= 0). Costing a zone leg in the opposite (junction -> zone) direction is a defensible reading of the same physical drive but yields costs differing by roughly 1 percent, which would swamp the optimality gaps this benchmark measures. Reproduce the stated convention exactly. The polylines in reference_paths.npz are stored already oriented terminal -> junction, so summing (cost_grid[p[i+1]] + excavation_rate_per_m) * ||p[i+1] - p[i]|| * cell_size_m over each stored path reproduces the reference cost; validate.py asserts this.",
+    "effective_length_plain_m": "Euclidean distance between voxel centres, i.e. cell_size_m * sqrt(dx^2 + dy^2 + dz^2) for the 26-neighbour offset (dx,dy,dz).",
+    "neighbourhood": 26,
+    "descent_constraint": "Ramp arcs are restricted to dz <= 0 (monotone descent); junction-to-zone crosscut arcs are restricted to dz == 0. NOTE: monotone descent is the ONLY geometric constraint on the `raw` track. There is no grade limit and no turn-radius limit -- see tracks.raw.",
+    "tier_histogram_passable": [
+      225551,
+      168046,
+      457060,
+      62566,
+      1690,
+      0
+    ]
+  },
+  "tracks": {
+    "normative": "constrained",
+    "definitions": {
+      "raw": "Voxel Steiner cost over the descent graph; no geometric constraint. Reproducible from the bundle alone. DIAGNOSTIC.",
+      "constrained": "Buildable capex: the same cost integrated along a centreline that satisfies GEOMETRIC_STANDARD, which the shipped verifier re-checks. NORMATIVE.",
+      "total": "Constrained capex plus life-of-mine operating cost under OPEX_MODEL. The only track on which Group E varies."
+    },
+    "geometric_standard": {
+      "max_grade": 0.2,
+      "min_turn_radius_m": 25.0,
+      "tunnel_span_m": 5.0,
+      "min_pillar_m": 5.0,
+      "portal_reach_m": 100.0
+    },
+    "constrained_admissible": true,
+    "constrained_admissible_rule": "min_turn_radius_m / cell_size_m >= 5. A cell that is a large fraction of the turning radius cannot carry the rendered arc, so legs fail for a reason about the grid rather than about the rock. Rungs below the floor are shipped and scored on `raw` only.",
+    "verifier": "steinerbench/buildable_check.py -- numpy only, no solver required. Submissions on the constrained and total tracks are re-checked with it against the shipped grid.",
+    "opex_model": {
+      "haul_cost_per_t_km": 0.35,
+      "haul_vert_cost_per_t_m": 0.012,
+      "vent_cost_per_m_yr": 12.0,
+      "pump_cost_per_m_yr_m_depth": 0.03,
+      "mine_life_years": 10.0,
+      "note": "Haulage = tonnes x (haul_m/1000 * haul_cost_per_t_km + lift_m * haul_vert_cost_per_t_m), summed over zones, where haul_m is the shortest path from the portal to the zone ALONG THE NETWORK. Ventilation and pumping are per metre of network per year."
+    },
+    "why_raw_is_not_normative": "Measured on the v1 reference solutions, 100 % of descending steps exceed a 20 % grade limit and the median step grade is 100 % (45 deg). The raw objective is the optimum of a relaxation that admits geometry no ramp can be built to; re-ranking on buildable cost flips the winning family on 15 of the 23 solved instances. `raw` is retained unchanged because it is exactly reproducible and because the gap between it and a buildable answer is itself a result."
+  },
+  "geology": {
+    "q_regime": "poor_dominated",
+    "q_regime_lobes": [
+      {
+        "weight": 1.0,
+        "median_q": 0.15,
+        "sigma_lognormal": 0.7
+      }
+    ],
+    "q_reference_lattice_m": 10.0,
+    "q_lattice_smoothing_nodes": 1.2,
+    "q_clip": [
+      0.001,
+      50.0
+    ],
+    "resolution_independence": "The Q field is drawn on a fixed 10 m world-space lattice and trilinearly interpolated to voxel centres, so every cell size samples the same geology.",
+    "barrier_slab": {
+      "rl_range_m": [
+        340.0,
+        400.0
+      ],
+      "q_multiplier": 0.05
+    },
+    "competent_windows": [
+      {
+        "name": "window_west",
+        "east_range_m": [
+          235.0,
+          275.0
+        ],
+        "rl_range_m": [
+          330.0,
+          410.0
+        ],
+        "q_multiplier": 4.0
+      },
+      {
+        "name": "window_east",
+        "east_range_m": [
+          350.0,
+          395.0
+        ],
+        "rl_range_m": [
+          330.0,
+          410.0
+        ],
+        "q_multiplier": 4.0
+      }
+    ],
+    "competent_windows_note": "A geological feature of the synthetic rock mass: competent breaches through the barrier slab. Unrelated to the MineOptimizer solver's --corridor search mask, which the benchmark never enables.",
+    "surface_model": "RL = 415 + 55*exp(-((N-230)/130)^2) + 18*sin(2*pi*E/420) - 12*(E/630); voxels above this RL are sentinel."
+  },
+  "fault_system": "two_crossing",
+  "faults": [
+    {
+      "id": "F1",
+      "name": "Fault_A",
+      "trace_plan_m": [
+        [
+          60.0,
+          120.0
+        ],
+        [
+          310.0,
+          205.0
+        ],
+        [
+          570.0,
+          300.0
+        ]
+      ],
+      "dip_deg": 75.0,
+      "dip_direction_deg": 340.0,
+      "damage_half_width_m": 18.0,
+      "rl_range_m": [
+        0.0,
+        500.0
+      ],
+      "q_multiplier": 0.1
+    },
+    {
+      "id": "F2",
+      "name": "Fault_B",
+      "trace_plan_m": [
+        [
+          100.0,
+          350.0
+        ],
+        [
+          320.0,
+          220.0
+        ],
+        [
+          540.0,
+          90.0
+        ]
+      ],
+      "dip_deg": 80.0,
+      "dip_direction_deg": 60.0,
+      "damage_half_width_m": 15.0,
+      "rl_range_m": [
+        0.0,
+        500.0
+      ],
+      "q_multiplier": 0.1
+    }
+  ],
+  "portals": [
+    {
+      "label": "P_South",
+      "site": "south",
+      "plan_m": [
+        315.0,
+        40.0
+      ],
+      "world_m": [
+        317.5,
+        42.5,
+        397.5
+      ],
+      "voxel": [
+        63,
+        8,
+        79
+      ],
+      "radius_m": 10.0,
+      "n_voxels": 19
+    }
+  ],
+  "zones": [
+    {
+      "label": "Z1",
+      "polygon_plan_m": [
+        [
+          215.0,
+          220.0
+        ],
+        [
+          285.0,
+          220.0
+        ],
+        [
+          285.0,
+          280.0
+        ],
+        [
+          215.0,
+          280.0
+        ]
+      ],
+      "centre_plan_m": [
+        250.0,
+        250.0
+      ],
+      "sublevel_rl_m": 320.0,
+      "rl_thickness_m": 10.0,
+      "tonnage_mt": 1.4,
+      "mean_grade_g_t": 2.9,
+      "n_voxels": 336
+    },
+    {
+      "label": "Z2",
+      "polygon_plan_m": [
+        [
+          355.0,
+          165.0
+        ],
+        [
+          425.0,
+          165.0
+        ],
+        [
+          425.0,
+          225.0
+        ],
+        [
+          355.0,
+          225.0
+        ]
+      ],
+      "centre_plan_m": [
+        390.0,
+        195.0
+      ],
+      "sublevel_rl_m": 260.0,
+      "rl_thickness_m": 10.0,
+      "tonnage_mt": 1.1,
+      "mean_grade_g_t": 3.4,
+      "n_voxels": 336
+    },
+    {
+      "label": "Z3",
+      "polygon_plan_m": [
+        [
+          210.0,
+          125.0
+        ],
+        [
+          280.0,
+          125.0
+        ],
+        [
+          280.0,
+          185.0
+        ],
+        [
+          210.0,
+          185.0
+        ]
+      ],
+      "centre_plan_m": [
+        245.0,
+        155.0
+      ],
+      "sublevel_rl_m": 200.0,
+      "rl_thickness_m": 10.0,
+      "tonnage_mt": 0.95,
+      "mean_grade_g_t": 2.6,
+      "n_voxels": 336
+    },
+    {
+      "label": "Z4",
+      "polygon_plan_m": [
+        [
+          350.0,
+          260.0
+        ],
+        [
+          420.0,
+          260.0
+        ],
+        [
+          420.0,
+          320.0
+        ],
+        [
+          350.0,
+          320.0
+        ]
+      ],
+      "centre_plan_m": [
+        385.0,
+        290.0
+      ],
+      "sublevel_rl_m": 140.0,
+      "rl_thickness_m": 10.0,
+      "tonnage_mt": 1.25,
+      "mean_grade_g_t": 3.1,
+      "n_voxels": 336
+    }
+  ],
+  "orebody": {
+    "zone_layout": "nested",
+    "tonnage_scale": 1.0,
+    "total_tonnage_mt": 4.7,
+    "tonnage_note": "Tonnage enters the `total` track only, through haulage. Nothing in the search reads it, so instances differing only in tonnage_scale have identical geometry, identical raw and constrained costs and identical buildability verdicts."
+  },
+  "topology_families": {
+    "n_zones": 4,
+    "n_sublevels": 4,
+    "level_grouping_tolerance_m": 15.0,
+    "applicable": [
+      "sublevel_fan",
+      "two_branch",
+      "three_branch",
+      "single_junction",
+      "sequential_ramp",
+      "chained_fan",
+      "hybrid_chained_fan_branch",
+      "spiral_decline",
+      "switchback_decline",
+      "twin_decline",
+      "conventional_decline",
+      "steiner_insertion"
+    ],
+    "gating_note": "two_branch and chained_fan require >= 2 sublevels; three_branch and hybrid_chained_fan_branch require >= 3. Families outside 'applicable' are not evaluated on this instance and must not be scored against it.",
+    "search_kind": {
+      "sublevel_fan": "exact",
+      "two_branch": "exact",
+      "three_branch": "exact",
+      "single_junction": "exact",
+      "sequential_ramp": "heuristic",
+      "chained_fan": "heuristic",
+      "hybrid_chained_fan_branch": "heuristic",
+      "spiral_decline": "heuristic",
+      "switchback_decline": "heuristic",
+      "twin_decline": "heuristic",
+      "conventional_decline": "rule",
+      "steiner_insertion": "heuristic"
+    }
+  },
+  "generation": {
+    "seed": 42202,
+    "seed_note": "The seed is keyed on (q_regime, fault_system), not on the instance id, so every instance sharing a geology -- the whole portal sweep, the whole zone-count sweep and all four scale rungs -- samples an identical rock mass.",
+    "generator_version": "2.0.0",
+    "generator_command": "python generate.py --only scale-1m",
+    "shipped_in_git": true,
+    "created_utc": "2026-08-04T08:16:28Z"
+  },
+  "varied_axis": {
+    "group": "scale_ladder",
+    "axis": [
+      "cell_size_m"
+    ],
+    "value": {
+      "cell_size_m": 5.0
+    },
+    "held_fixed_ref": "xgrid-f2x-qpoor",
+    "duplicate_of": "xgrid-f2x-qpoor"
+  },
+  "checksums": {
+    "cost_grid.npz": "sha256:b466e4cf975822c38cccdb1db534e7291d36b5465ce6fdd3a60f3aaee7146c46",
+    "size_bytes": 142824
+  }
+}

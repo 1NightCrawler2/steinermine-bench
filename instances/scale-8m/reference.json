@@ -1,0 +1,153 @@
+{
+  "instance_id": "scale-8m",
+  "schema_version": "2.1",
+  "benchmark_version": "2.1.0",
+  "reference_type": "unsolved",
+  "objective": "Total raw voxel cost of a portal-rooted, monotonically descending network reaching every production zone, with edge weight w(u,v) = (cost_grid[v] + excavation_rate_per_m) * effective_length_m(u,v) over the 26-neighbourhood. Excludes buildability post-processing, operating cost and portal establishment.",
+  "reference_cost": null,
+  "reference_cost_buildable": null,
+  "best_topology": null,
+  "lower_bounds": {
+    "raw": {
+      "value": 0.0,
+      "method": "none",
+      "components": {},
+      "note": "not computed for an unsolved instance",
+      "track": "raw",
+      "valid": true
+    },
+    "constrained": {
+      "value": 3452875.6367897405,
+      "method": "geometric_grade_floor",
+      "valid": true,
+      "track": "constrained",
+      "components": {
+        "geometric_grade_floor": 3452875.6367897405
+      },
+      "audit": {
+        "value": 3452875.6367897405,
+        "method": "geometric_grade_floor",
+        "capex_floor": 3452875.6367897405,
+        "portal_establishment": 0.0,
+        "opex_floor": 0.0,
+        "min_length_m": 1230.1384576542594,
+        "length_binds_on": "grade",
+        "binding_zone": "Z4",
+        "binding_zone_index": 3,
+        "drop_m": 241.25,
+        "grade_length_m": 1230.1384576542594,
+        "straight_line_m": 320.7263979084873,
+        "max_grade": 0.2,
+        "sin_theta_max": 0.19611613513818404,
+        "portal_rl_m": 386.25,
+        "zone_top_rl_m": 145.0,
+        "unit_cost_per_m": 1806.9,
+        "excavation_rate_per_m": 1000.0,
+        "cost_per_m": 2806.9,
+        "n_portals": 0,
+        "portal_establishment_cost": 0.0,
+        "derivation": "L >= 241.2 m / sin(atan(0.2)) = 1230.1 m; straight line 320.7 m; L >= 1230.1 m. cost >= 1230.1 * ($1,806.9 + $1,000.0) = $3,452,876 = $3,452,876"
+      }
+    },
+    "total": {
+      "value": 13371146.230068015,
+      "method": "geometric_grade_floor+opex_floor",
+      "valid": true,
+      "track": "total",
+      "components": {
+        "geometric_grade_floor+opex_floor": 13371146.230068015
+      },
+      "audit": {
+        "value": 13371146.230068015,
+        "method": "geometric_grade_floor+opex_floor",
+        "capex_floor": 3452875.6367897405,
+        "portal_establishment": 0.0,
+        "opex_floor": 9918270.593278274,
+        "min_length_m": 1230.1384576542594,
+        "length_binds_on": "grade",
+        "binding_zone": "Z4",
+        "binding_zone_index": 3,
+        "drop_m": 241.25,
+        "grade_length_m": 1230.1384576542594,
+        "straight_line_m": 320.7263979084873,
+        "max_grade": 0.2,
+        "sin_theta_max": 0.19611613513818404,
+        "portal_rl_m": 386.25,
+        "zone_top_rl_m": 145.0,
+        "unit_cost_per_m": 1806.9,
+        "excavation_rate_per_m": 1000.0,
+        "cost_per_m": 2806.9,
+        "n_portals": 1,
+        "portal_establishment_cost": 0.0,
+        "derivation": "L >= 241.2 m / sin(atan(0.2)) = 1230.1 m; straight line 320.7 m; L >= 1230.1 m. cost >= 1230.1 * ($1,806.9 + $1,000.0) = $3,452,876 + opex floor $9,918,271 = $13,371,146",
+        "opex_audit": {
+          "value": 9918270.593278274,
+          "haulage_floor": 9833044.100918211,
+          "vent_pump_floor": 85226.49236006373,
+          "longest_required_length_m": 1230.1384576542594,
+          "voxel_length_safety_divisor": 1.7320508075688772,
+          "opex_model": {
+            "haul_cost_per_t_km": 0.35,
+            "haul_vert_cost_per_t_m": 0.012,
+            "vent_cost_per_m_yr": 12.0,
+            "pump_cost_per_m_yr_m_depth": 0.03,
+            "mine_life_years": 10.0
+          },
+          "per_zone": [
+            {
+              "label": "Z1",
+              "tonnes": 1400000.0,
+              "min_haul_m": 312.314945207558,
+              "min_lift_m": 66.25,
+              "binds": "grade",
+              "cost": 1266034.3231517035
+            },
+            {
+              "label": "Z2",
+              "tonnes": 1100000.0,
+              "min_haul_m": 618.2561160231252,
+              "min_lift_m": 126.25,
+              "binds": "grade",
+              "cost": 1904528.6046689034
+            },
+            {
+              "label": "Z3",
+              "tonnes": 950000.0,
+              "min_haul_m": 924.1972868386922,
+              "min_lift_m": 186.25,
+              "binds": "grade",
+              "cost": 2430545.597873865
+            },
+            {
+              "label": "Z4",
+              "tonnes": 1250000.0,
+              "min_haul_m": 1230.1384576542594,
+              "min_lift_m": 246.25,
+              "binds": "grade",
+              "cost": 4231935.575223738
+            }
+          ],
+          "pumping_included": false,
+          "derivation": "haulage >= sum_k tonnes_k * (L_k/1000 * $0.35/t-km + lift_k * $0.012/t-m) = $9,833,044; vent >= 1230.1/sqrt(3) m * $12/m-yr * 10 yr = $85,226; pumping dropped (non-negative)"
+        }
+      }
+    }
+  },
+  "gaps_to_lower_bound": {
+    "raw": null,
+    "constrained": null,
+    "total": null
+  },
+  "note": "No reference solution. At 8,265,600 voxels (7,319,376 passable) the grid is small enough to solve, but the constrained planner reaches no goal on any of the twelve families, while the same geology at a 5 m cell plans every leg. The radius-to-cell ratio here is the finest in the suite, so this is not the discretisation floor -- it is a SEARCH-BUDGET limit (LATTICE_MAX_EXPAND binding on a heading-augmented state space of this size). Nothing here says no network exists, only that this solver did not find one. The grid, terminals and cost model are fully specified, so this instance stands as an open frontier: the first valid solution submitted becomes its best-known reference. score.py reports submissions for it without an optimality gap. The constrained and total lower bounds ARE computed and valid -- they follow from the grade limit and the cheapest rock in the model, not from a search -- so a submission can still be judged against a floor.",
+  "created_utc": "2026-08-15T03:28:19Z",
+  "lower_bound": {
+    "value": 0.0,
+    "method": "none",
+    "components": {},
+    "note": "not computed for an unsolved instance",
+    "track": "raw",
+    "valid": true
+  },
+  "gap_to_lower_bound": null,
+  "bounds_recomputed_utc": "2026-08-15T04:20:45Z"
+}

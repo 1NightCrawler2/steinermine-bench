@@ -1,0 +1,61 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Applies to the benchmark DATA in this repository: everything under instances/
+(cost grids, metadata, reference solutions, per-instance documentation) and
+tables/.
+
+The SOFTWARE in this repository is licensed separately under the MIT License;
+see LICENSE-CODE.
+
+Copyright (c) 2026 Kürşat Hasözdemir
+
+-------------------------------------------------------------------------------
+
+You are free to:
+
+  Share  — copy and redistribute the material in any medium or format
+  Adapt  — remix, transform, and build upon the material for any purpose,
+           even commercially
+
+The licensor cannot revoke these freedoms as long as you follow the license
+terms.
+
+Under the following terms:
+
+  Attribution — You must give appropriate credit, provide a link to the
+  license, and indicate if changes were made. You may do so in any reasonable
+  manner, but not in any way that suggests the licensor endorses you or your
+  use.
+
+  No additional restrictions — You may not apply legal terms or technological
+  measures that legally restrict others from doing anything the license
+  permits.
+
+Notices:
+
+  You do not have to comply with the license for elements of the material in
+  the public domain or where your use is permitted by an applicable exception
+  or limitation.
+
+  No warranties are given. The license may not give you all of the permissions
+  necessary for your intended use. For example, other rights such as publicity,
+  privacy, or moral rights may limit how you use the material.
+
+-------------------------------------------------------------------------------
+
+To attribute this benchmark, cite the record in CITATION.cff.
+
+The full license text is available at:
+https://creativecommons.org/licenses/by/4.0/legalcode
+
+-------------------------------------------------------------------------------
+
+DATA PROVENANCE
+
+All instances in this benchmark are SYNTHETIC and procedurally generated from
+recorded seeds. The rock mass quality fields, fault geometry, topography,
+portal locations and production-zone geometry were constructed to be
+geotechnically representative of a hard-rock underground operation, using the
+published NGI Barton Q-system support classes. They are NOT derived from,
+measured at, or descriptive of any real or operating mine, and the coordinate
+frame is a neutral local origin with no geographic meaning.

@@ -1,0 +1,21 @@
+# SteinerMineBench — runtime requirements
+#
+# Loading instances and scoring a submission need only numpy and scipy.
+# You do NOT need a MineOptimizer checkout unless you are regenerating the
+# reference solutions with solve_reference.py.
+
+numpy>=1.24
+scipy>=1.11
+
+# Optional, strongly recommended:
+#   jsonschema  — full schema validation in validate.py and score.py
+#                 (both degrade to basic structural checks without it)
+jsonschema>=4.0
+
+# Optional, only for regenerating the figures in figures/:
+#   matplotlib  -- python figures/make_figures.py
+matplotlib>=3.7
+
+# Optional, only for regenerating references:
+#   the MineOptimizer reference solver, pointed at by MINEOPTIMIZER_ROOT
+#   or --mineoptimizer. See README "Regenerating the references".

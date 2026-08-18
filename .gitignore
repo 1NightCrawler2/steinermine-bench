@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Scoring output (regenerate with score.py)
+results.csv
+submission*.json
+
+# Optional Q-field dumps (regenerate with generate.py --emit-q)
+instances/*/q_field.npy
+
+# Solver logs
+logs/
+
+# Manuscript assets -- kept on disk for the accompanying publication and
+# deliberately NOT distributed: the figures, the code that renders them, and
+# the LaTeX methods/results sections. Do not `git add -f` these.
+figures/
+paper/
+
+# The LaTeX renderings of the results tables are formatted for direct \input
+# into the manuscript, so they are withheld too. The machine-readable CSV is
+# published -- and the underlying numbers are public in every reference.json --
+# so nothing is hidden from users of the dataset, only the paper's typesetting.
+tables/*.tex
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

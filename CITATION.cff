@@ -1,0 +1,79 @@
+# Citation metadata for SteinerMineBench.
+#
+# NO DOI YET. The earlier Zenodo records (concept 10.5281/zenodo.21747902 and
+# version ...903) were DELETED by the author, so citing them would resolve to
+# nothing -- a dead DOI is worse than an absent one. Once the new record is
+# minted, add the concept DOI to `doi:`, `identifiers:` and `url:`.
+#
+# The paper is in preparation; fill in `journal` and add its `doi` to the
+# preferred-citation block once published. Editing Zenodo record metadata after
+# minting does not change the DOI, so both can be updated later.
+#
+# `python validate.py --publication` re-checks that no unfilled template markers
+# have crept back into this file, .zenodo.json or the README.
+
+cff-version: 1.2.0
+message: "If you use SteinerMineBench, please cite the dataset. Once the accompanying paper is published, please cite both."
+type: dataset
+
+title: "SteinerMineBench: a benchmark suite for geotechnically-weighted Steiner trees on voxel grids"
+abstract: >-
+  Twenty-eight synthetic, procedurally generated benchmark instances for
+  underground mine ramp network optimisation, modelled as directed Steiner
+  arborescences on three-dimensional voxel cost grids derived from the NGI
+  Barton Q-system. Instances vary along five controlled axes: fault
+  architecture crossed with rock mass quality regime, portal location,
+  production zone count, voxel resolution from 1.3e5 to 1.3e8 voxels, and
+  haulage tonnage. Each bundle ships a compressed cost grid, complete metadata,
+  a best-known reference solution, and a provably valid lower bound on each of
+  three cost tracks: the raw voxel relaxation, the grade-constrained buildable
+  capital cost, and capital plus life-of-mine operating cost. Other researchers
+  can therefore run their own solvers on identical instances and report a
+  certified optimality gap. Reference solutions are computed on a deterministic
+  CPU path and are bit-reproducible on any machine; each bundle records the
+  solver engine and environment that produced it. All data is synthetic and is
+  not derived from any operating mine.
+
+version: "1.0.0"
+date-released: "2026-08-15"
+license: CC-BY-4.0
+license-url: "https://creativecommons.org/licenses/by/4.0/"
+
+# doi: filled in once the new Zenodo record is minted (see the header note).
+identifiers: []
+
+repository-code: "https://github.com/1NightCrawler2/SteinerMineBench"
+
+authors:
+  - family-names: "Hasözdemir"
+    given-names: "Kürşat"
+    orcid: "https://orcid.org/0000-0002-2710-9562"
+    affiliation: "Department of Mining Engineering, Istanbul Technical University"
+    email: "hasozdemir@itu.edu.tr"
+
+keywords:
+  - mine planning
+  - underground mining
+  - ramp network design
+  - Steiner tree
+  - directed Steiner arborescence
+  - voxel model
+  - Barton Q-system
+  - rock mass classification
+  - geotechnical engineering
+  - combinatorial optimisation
+  - benchmark dataset
+
+preferred-citation:
+  type: article
+  title: >-
+    Geotechnically Weighted Steiner Trees on Voxel Grids: Rock-Mass-Constrained
+    Optimisation of Underground Ramp Networks for Minimum Excavation and
+    Support Cost
+  authors:
+    - family-names: "Hasözdemir"
+      given-names: "Kürşat"
+      orcid: "https://orcid.org/0000-0002-2710-9562"
+      affiliation: "Department of Mining Engineering, Istanbul Technical University"
+  journal: "In preparation"
+  year: 2026

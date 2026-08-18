@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://steinerminebench.org/schemas/reference.schema.json",
+  "title": "SteinerMineBench reference solution",
+  "description": "The reference solution for one instance, produced by solve_reference.py. reference_cost on the raw track is the graded quantity; a submission's optimality gap is measured against it.",
+  "type": "object",
+  "required": ["instance_id", "schema_version", "reference_type", "objective"],
+  "additionalProperties": true,
+  "properties": {
+    "instance_id": { "type": "string" },
+    "schema_version": { "type": "string" },
+
+    "reference_type": {
+      "enum": ["exact", "best_known", "unsolved"],
+      "description": "'exact' means the winning family's junction placement was independently recomputed from scratch and matched (see per_family[].exactness_check). 'best_known' means the winner uses a greedy or coordinate-descent search and may be improvable. 'unsolved' means no reference has been computed."
+    },
+    "objective": {
+      "type": "string",
+      "description": "Human-readable statement of exactly what reference_cost measures."
+    },
+
+    "reference_cost": {
+      "type": ["number", "null"],
+      "exclusiveMinimum": 0,
+      "description": "Raw voxel Steiner cost in dollars of the cheapest applicable family. The normative, graded quantity. Null iff reference_type is 'unsolved'."
+    },
+    "reference_cost_buildable": {
+      "type": ["number", "null"],
+      "description": "Cost after deterministic geometric buildability post-processing (grade and turn-radius enforcement, spiral insertion). Secondary scoring track."
+    },
+    "best_topology": { "type": ["string", "null"] },
+    "best_topology_buildable": { "type": ["string", "null"] },
+
+    "lower_bound": {
+      "$ref": "#/$defs/bound",
+      "description": "The RAW-track bound, kept under its v2.0.0 name and semantics. For the constrained and total tracks see lower_bounds."
+    },
+    "lower_bounds": {
+      "type": "object",
+      "description": "Per-track lower bounds. The raw track is bounded by the relaxation (pairwise divergence); the constrained and total tracks add a geometric floor derived from the grade limit, which is NOT valid on the raw track because an unconstrained network may descend at any angle.",
+      "additionalProperties": false,
+      "properties": {
+        "raw": { "$ref": "#/$defs/bound" },
+        "constrained": { "$ref": "#/$defs/bound" },
+        "total": { "$ref": "#/$defs/bound" }
+      }
+    },
+    "gap_to_lower_bound": {
+      "type": ["number", "null"],
+      "description": "(reference_cost - lower_bound) / lower_bound on the RAW track. An upper bound on the true optimality gap of the raw reference."
+    },
+    "gaps_to_lower_bound": {
+      "type": "object",
+      "description": "Per-track (reference_cost_<track> - lower_bounds.<track>.value) / lower_bounds.<track>.value.",
+      "additionalProperties": false,
+      "properties": {
+        "raw": { "type": ["number", "null"] },
+        "constrained": { "type": ["number", "null"] },
+        "total": { "type": ["number", "null"] }
+      }
+    },
+    "bounds_recomputed_utc": {
+      "type": "string",
+      "description": "When the bound blocks were last rewritten by solve_reference.py --recompute-bounds-only. The geometric floors need only metadata.json, so they can be re-derived and audited without re-solving."
+    },
+
+    "per_family": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["family", "search", "cost"],
+        "properties": {
+          "family": {
+            "enum": ["sublevel_fan", "two_branch", "three_branch",
+                     "single_junction", "sequential_ramp", "chained_fan",
+                     "hybrid_chained_fan_branch", "spiral_decline",
+                     "switchback_decline", "twin_decline",
+                     "conventional_decline", "steiner_insertion"]
+          },
+          "search": { "enum": ["exact", "heuristic", "rule"] },
+          "cost": { "type": ["number", "null"] },
+          "cost_buildable": { "type": ["number", "null"] },
+          "total_length_m": { "type": ["number", "null"] },
+          "junctions_voxel": {
+            "type": "array",
+            "items": {
+              "type": "array", "minItems": 3, "maxItems": 3,
+              "items": { "type": "integer", "minimum": 0 }
+            }
+          },
+          "junctions_world_m": {
+            "type": "array",
+            "items": {
+              "type": "array", "minItems": 3, "maxItems": 3,
+              "items": { "type": "number" }
+            }
+          },
+          "support_class_length_m": {
+            "type": "object",
+            "description": "Metres of drive in each Barton Q support class, keyed by the support_class strings in metadata.cost_model.tier_schedule.",
+            "additionalProperties": { "type": "number", "minimum": 0 }
+          },
+          "runtime_s": { "type": "number", "minimum": 0 },
+          "exactness_check": {
+            "type": "object",
+            "description": "Result of an independent recomputation that shares no code with the reference solver. Present only for families whose search is 'exact'.",
+            "required": ["performed"],
+            "properties": {
+              "performed": { "type": "boolean" },
+              "independent_argmin_matches": { "type": "boolean" },
+              "max_rel_cost_delta": { "type": "number", "minimum": 0 },
+              "junction_voxel_matches": { "type": "boolean" },
+              "method": { "type": "string" },
+              "note": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "environment": {
+      "type": "object",
+      "properties": {
+        "solver": { "type": "string" },
+        "solver_commit": { "type": "string" },
+        "flood_engine": { "type": "string" },
+        "opex_in_edge_weights": { "type": "boolean" },
+        "lattice_refinement": { "type": "boolean" },
+        "python": { "type": "string" },
+        "numpy": { "type": "string" },
+        "scipy": { "type": "string" },
+        "platform": { "type": "string" },
+        "cpu_count": { "type": "integer" }
+      }
+    },
+
+    "total_runtime_s": { "type": "number", "minimum": 0 },
+    "created_utc": { "type": "string" },
+    "note": { "type": "string" }
+  },
+
+  "allOf": [
+    {
+      "if": {
+        "properties": { "reference_type": { "const": "unsolved" } },
+        "required": ["reference_type"]
+      },
+      "then": {
+        "properties": { "reference_cost": { "type": "null" } }
+      },
+      "else": {
+        "required": ["reference_cost", "best_topology", "per_family",
+                     "lower_bound", "lower_bounds"],
+        "properties": { "reference_cost": { "type": "number" } }
+      }
+    }
+  ],
+
+  "$defs": {
+    "bound": {
+      "type": "object",
+      "required": ["value", "method", "valid"],
+      "properties": {
+        "value": { "type": ["number", "null"], "minimum": 0 },
+        "method": {
+          "type": "string",
+          "pattern": "^[a-z_+]+$",
+          "description": "The method that produced the strongest bound for this track. Every method that sets a value is provably valid; they differ in tightness, not soundness. Deliberately an open string rather than an enum: a closed enum makes every future bound a breaking schema change, and `components` has always been open. steinerbench.lower_bound.KNOWN_BOUND_METHODS lists what the suite currently emits and validate.py warns on anything else. Currently: pairwise_divergence, max_terminal_shortest_path, raw_relaxation, geometric_grade_floor, geometric_grade_floor+opex_floor, none. WITHDRAWN in v2.1.0: wong_dual_ascent (never competitive on a dense voxel lattice; validate.py now fails on it)."
+        },
+        "valid": {
+          "const": true,
+          "description": "Must be true. A bound that does not provably lower-bound the optimum over ALL applicable topology families must not ship."
+        },
+        "track": {
+          "enum": ["raw", "constrained", "total"],
+          "description": "Which cost track this bound applies to. A bound is only meaningful against its own track's cost."
+        },
+        "note": { "type": "string" },
+        "components": {
+          "type": "object",
+          "description": "Every bound computed for this track, keyed by method name. The reported value is the maximum over the PROVABLE ones, since the maximum of valid bounds is valid.",
+          "additionalProperties": { "type": "number", "minimum": 0 }
+        },
+        "conditional_components": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Components recorded but NOT used to set `value`, because they are believed to bound the optimum without being proved to. `raw_best_known_conditional` is the motivating case: the per-family domination argument rests on the centreline-versus-arc costing convention being exact, which is not proved."
+        },
+        "audit": {
+          "type": "object",
+          "description": "Every input to the geometric floor, echoed so the value can be re-derived from this record alone -- no grid, no metadata, no code. validate.py re-derives it from metadata.json and fails on any mismatch.",
+          "additionalProperties": true
+        },
+        "runtime_s": { "type": "number", "minimum": 0 }
+      }
+    }
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "instance_id": "scale-129m",
+  "schema_version": "2.1",
+  "benchmark_version": "2.1.0",
+  "reference_type": "unsolved",
+  "objective": "Total raw voxel cost of a portal-rooted, monotonically descending network reaching every production zone, with edge weight w(u,v) = (cost_grid[v] + excavation_rate_per_m) * effective_length_m(u,v) over the 26-neighbourhood. Excludes buildability post-processing, operating cost and portal establishment.",
+  "reference_cost": null,
+  "reference_cost_buildable": null,
+  "best_topology": null,
+  "lower_bounds": {
+    "raw": {
+      "value": 0.0,
+      "method": "none",
+      "components": {},
+      "note": "not computed for an unsolved instance",
+      "track": "raw",
+      "valid": true
+    },
+    "constrained": {
+      "value": 3470766.18413062,
+      "method": "geometric_grade_floor",
+      "valid": true,
+      "track": "constrained",
+      "components": {
+        "geometric_grade_floor": 3470766.18413062
+      },
+      "audit": {
+        "value": 3470766.18413062,
+        "method": "geometric_grade_floor",
+        "capex_floor": 3470766.18413062,
+        "portal_establishment": 0.0,
+        "opex_floor": 0.0,
+        "min_length_m": 1236.5122320462503,
+        "length_binds_on": "grade",
+        "binding_zone": "Z4",
+        "binding_zone_index": 3,
+        "drop_m": 242.5,
+        "grade_length_m": 1236.5122320462503,
+        "straight_line_m": 322.2310588875301,
+        "max_grade": 0.2,
+        "sin_theta_max": 0.19611613513818404,
+        "portal_rl_m": 387.5,
+        "zone_top_rl_m": 145.0,
+        "unit_cost_per_m": 1806.9,
+        "excavation_rate_per_m": 1000.0,
+        "cost_per_m": 2806.9,
+        "n_portals": 0,
+        "portal_establishment_cost": 0.0,
+        "derivation": "L >= 242.5 m / sin(atan(0.2)) = 1236.5 m; straight line 322.2 m; L >= 1236.5 m. cost >= 1236.5 * ($1,806.9 + $1,000.0) = $3,470,766 = $3,470,766"
+      }
+    },
+    "total": {
+      "value": 13470463.224327035,
+      "method": "geometric_grade_floor+opex_floor",
+      "valid": true,
+      "track": "total",
+      "components": {
+        "geometric_grade_floor+opex_floor": 13470463.224327035
+      },
+      "audit": {
+        "value": 13470463.224327035,
+        "method": "geometric_grade_floor+opex_floor",
+        "capex_floor": 3470766.18413062,
+        "portal_establishment": 0.0,
+        "opex_floor": 9999697.040196415,
+        "min_length_m": 1236.5122320462503,
+        "length_binds_on": "grade",
+        "binding_zone": "Z4",
+        "binding_zone_index": 3,
+        "drop_m": 242.5,
+        "grade_length_m": 1236.5122320462503,
+        "straight_line_m": 322.2310588875301,
+        "max_grade": 0.2,
+        "sin_theta_max": 0.19611613513818404,
+        "portal_rl_m": 387.5,
+        "zone_top_rl_m": 145.0,
+        "unit_cost_per_m": 1806.9,
+        "excavation_rate_per_m": 1000.0,
+        "cost_per_m": 2806.9,
+        "n_portals": 1,
+        "portal_establishment_cost": 0.0,
+        "derivation": "L >= 242.5 m / sin(atan(0.2)) = 1236.5 m; straight line 322.2 m; L >= 1236.5 m. cost >= 1236.5 * ($1,806.9 + $1,000.0) = $3,470,766 + opex floor $9,999,697 = $13,470,463",
+        "opex_audit": {
+          "value": 9999697.040196415,
+          "haulage_floor": 9914028.959793035,
+          "vent_pump_floor": 85668.08040338013,
+          "longest_required_length_m": 1236.5122320462503,
+          "voxel_length_safety_divisor": 1.7320508075688772,
+          "opex_model": {
+            "haul_cost_per_t_km": 0.35,
+            "haul_vert_cost_per_t_m": 0.012,
+            "vent_cost_per_m_yr": 12.0,
+            "pump_cost_per_m_yr_m_depth": 0.03,
+            "mine_life_years": 10.0
+          },
+          "per_zone": [
+            {
+              "label": "Z1",
+              "tonnes": 1400000.0,
+              "min_haul_m": 318.688719599549,
+              "min_lift_m": 67.5,
+              "binds": "grade",
+              "cost": 1290157.472603779
+            },
+            {
+              "label": "Z2",
+              "tonnes": 1100000.0,
+              "min_haul_m": 624.629890415116,
+              "min_lift_m": 127.5,
+              "binds": "grade",
+              "cost": 1923482.50780982
+            },
+            {
+              "label": "Z3",
+              "tonnes": 950000.0,
+              "min_haul_m": 930.5710612306832,
+              "min_lift_m": 187.5,
+              "binds": "grade",
+              "cost": 2446914.877859202
+            },
+            {
+              "label": "Z4",
+              "tonnes": 1250000.0,
+              "min_haul_m": 1236.5122320462503,
+              "min_lift_m": 247.5,
+              "binds": "grade",
+              "cost": 4253474.101520235
+            }
+          ],
+          "pumping_included": false,
+          "derivation": "haulage >= sum_k tonnes_k * (L_k/1000 * $0.35/t-km + lift_k * $0.012/t-m) = $9,914,029; vent >= 1236.5/sqrt(3) m * $12/m-yr * 10 yr = $85,668; pumping dropped (non-negative)"
+        }
+      }
+    }
+  },
+  "gaps_to_lower_bound": {
+    "raw": null,
+    "constrained": null,
+    "total": null
+  },
+  "note": "No reference solution. At 129,150,000 voxels (114,365,849 passable) a multi-source Dijkstra over the 26-neighbour graph needs roughly 22 GB for the CSR structure alone, beyond the machine used to build this suite -- a MEMORY limit. The grid, terminals and cost model are fully specified, so this instance stands as an open frontier: the first valid solution submitted becomes its best-known reference. score.py reports submissions for it without an optimality gap. The constrained and total lower bounds ARE computed and valid -- they follow from the grade limit and the cheapest rock in the model, not from a search -- so a submission can still be judged against a floor.",
+  "created_utc": "2026-08-15T03:28:20Z",
+  "lower_bound": {
+    "value": 0.0,
+    "method": "none",
+    "components": {},
+    "note": "not computed for an unsolved instance",
+    "track": "raw",
+    "valid": true
+  },
+  "gap_to_lower_bound": null,
+  "bounds_recomputed_utc": "2026-08-15T04:20:45Z"
+}

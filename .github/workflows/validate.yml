@@ -1,0 +1,65 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Validate every instance bundle
+        # --fast skips the 8.3 M and 129 M voxel rungs, which exceed a hosted
+        # runner's memory when re-costing. The determinism check below still
+        # covers their grids.
+        run: python validate.py --fast
+
+      - name: Verify the shipped grids are reproducible
+        # Regenerates every cost grid from its recorded seed and compares the
+        # SHA-256 against metadata.json. This is the guarantee that the frozen
+        # set is reviewable.
+        run: python generate.py --check --skip-large
+
+      - name: Cross-check the frozen tier schedule is self-consistent
+        run: |
+          python - <<'PY'
+          from steinerbench.tiers import (
+              TIER_COSTS, FAULT_SINGLE_MIN_TIER, FAULT_MULTI_MIN_TIER,
+              FAULT_SINGLE_MIN_COST, FAULT_MULTI_MIN_COST,
+          )
+          # Both fault floors must be exactly representable as tier costs,
+          # otherwise the uint8 tier_index storage format would be lossy.
+          assert TIER_COSTS[FAULT_SINGLE_MIN_TIER] == FAULT_SINGLE_MIN_COST
+          assert TIER_COSTS[FAULT_MULTI_MIN_TIER] == FAULT_MULTI_MIN_COST
+          print("tier schedule OK")
+          PY
+
+      - name: Score the frozen references
+        run: python score.py --no-csv
+
+      - name: End-to-end submission workflow
+        run: |
+          python examples/minimal_solver.py --only scale-130k zones-02 > sub.json
+          python score.py --submission sub.json --fail-on-invalid --no-csv
+
+      - name: Regenerate paper tables
+        run: python make_tables.py

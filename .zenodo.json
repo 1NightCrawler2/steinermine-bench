@@ -1,0 +1,49 @@
+{
+  "_comment": [
+    "Zenodo deposition metadata for SteinerMineBench.",
+    "With the Zenodo GitHub integration enabled for this repository, pushing a",
+    "version tag mints a DOI automatically and Zenodo reads this file. Paste the",
+    "resulting CONCEPT DOI into CITATION.cff.",
+    "The previous records (10.5281/zenodo.21747902 and ...903) were deleted by",
+    "the author; this is a fresh record, so there is no DOI lineage to preserve.",
+    "Once the accompanying paper has a DOI, add it to related_identifiers with",
+    "relation 'isSupplementTo' so Zenodo cross-links the dataset and the paper."
+  ],
+  "title": "SteinerMineBench: a benchmark suite for geotechnically-weighted Steiner trees on voxel grids",
+  "description": "<p>Twenty-eight synthetic, procedurally generated benchmark instances for underground mine ramp network optimisation, modelled as directed Steiner arborescences on three-dimensional voxel cost grids derived from the NGI Barton Q-system.</p><p>Instances vary along five controlled axes: fault architecture crossed with rock mass quality regime (12 instances), portal location (4), production zone count (4), voxel resolution from 1.3e5 to 1.3e8 voxels (4), and haulage tonnage (4). Within each sweep exactly one axis changes, so differences in solver behaviour are attributable.</p><p>Every bundle ships a compressed cost grid, complete metadata (grid geometry, Q-to-cost tier schedule, fault polylines, portal and zone geometry, generation seed), a best-known reference solution, and a provably valid lower bound on each of three cost tracks &mdash; the raw voxel relaxation, the grade-constrained buildable capital cost, and capital plus life-of-mine operating cost. Researchers can therefore run their own solvers on identical instances and report a certified optimality gap. A loader, scorer and validator are included; scoring requires only numpy and scipy.</p><p><strong>References are bit-reproducible.</strong> They are solved on a deterministic CPU path (scipy true Dijkstra, no relaxation tolerance), so re-solving reproduces them exactly on any machine; each reference.json records the environment that produced it. A GPU path exists and is roughly twice as fast, but it shifts the normative constrained track by about 6% and can reorder the winning topology family, so it is used only to generate the interactive viewer pages and never for references.</p><p><strong>All data is synthetic.</strong> The rock mass quality fields, fault geometry, topography and terminal locations were procedurally constructed to be geotechnically representative of a hard-rock underground operation. They are not derived from, measured at, or descriptive of any real or operating mine, and the coordinate frame is a neutral local origin with no geographic meaning.</p>",
+  "upload_type": "dataset",
+  "access_right": "open",
+  "license": "cc-by-4.0",
+  "version": "1.0.0",
+  "language": "eng",
+  "creators": [
+    {
+      "name": "Hasözdemir, Kürşat",
+      "affiliation": "Department of Mining Engineering, Istanbul Technical University",
+      "orcid": "0000-0002-2710-9562"
+    }
+  ],
+  "keywords": [
+    "mine planning",
+    "underground mining",
+    "ramp network design",
+    "Steiner tree",
+    "directed Steiner arborescence",
+    "voxel model",
+    "Barton Q-system",
+    "rock mass classification",
+    "geotechnical engineering",
+    "combinatorial optimisation",
+    "benchmark dataset",
+    "synthetic data"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/1NightCrawler2/SteinerMineBench",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    }
+  ],
+  "notes": "Instances are frozen. generate.py reproduces every cost grid bit-for-bit from the seeds recorded in each metadata.json; `python generate.py --check` verifies this against the shipped SHA-256 checksums. Improved best-known bounds are welcome: see the submission instructions in the README."
+}

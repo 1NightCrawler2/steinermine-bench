@@ -1,0 +1,248 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://steinerminebench.org/schemas/metadata.schema.json",
+  "title": "SteinerMineBench instance metadata",
+  "description": "Describes one benchmark instance: its grid, cost model, synthetic geology, terminals, and the single axis it varies within its group.",
+  "type": "object",
+  "required": [
+    "instance_id", "schema_version", "benchmark_version", "synthetic",
+    "provenance_statement", "grid", "cost_model", "geology", "fault_system",
+    "faults", "portals", "zones", "topology_families", "generation",
+    "varied_axis", "checksums"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "instance_id": { "type": "string", "minLength": 1 },
+    "schema_version": { "type": "string" },
+    "benchmark_version": { "type": "string" },
+    "synthetic": {
+      "const": true,
+      "description": "Every instance in this benchmark is procedurally generated. A bundle claiming otherwise is invalid."
+    },
+    "provenance_statement": { "type": "string", "minLength": 50 },
+
+    "grid": {
+      "type": "object",
+      "required": [
+        "dims", "cell_size_m", "min_coords_m", "axis_order", "z_positive",
+        "world_from_voxel", "sentinel_cost_per_m", "sentinel_tier_index",
+        "passable_test", "n_voxels", "n_passable", "passable_fraction"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "dims": {
+          "type": "array", "minItems": 3, "maxItems": 3,
+          "items": { "type": "integer", "minimum": 1 }
+        },
+        "cell_size_m": { "type": "number", "exclusiveMinimum": 0 },
+        "min_coords_m": {
+          "type": "array", "minItems": 3, "maxItems": 3,
+          "items": { "type": "number" }
+        },
+        "domain_size_m": {
+          "type": "array", "minItems": 3, "maxItems": 3,
+          "items": { "type": "number", "exclusiveMinimum": 0 }
+        },
+        "axis_order": { "const": ["EAST", "NORTH", "RL"] },
+        "z_positive": { "const": "up" },
+        "world_from_voxel": { "type": "string" },
+        "sentinel_cost_per_m": { "type": "number", "exclusiveMinimum": 0 },
+        "sentinel_tier_index": { "type": "integer", "minimum": 0, "maximum": 255 },
+        "passable_test": { "type": "string" },
+        "n_voxels": { "type": "integer", "minimum": 1 },
+        "n_passable": { "type": "integer", "minimum": 1 },
+        "passable_fraction": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+
+    "cost_model": {
+      "type": "object",
+      "required": [
+        "objective", "tier_schedule", "fault_single_floor_per_m",
+        "fault_multi_floor_per_m", "fault_floor_rule",
+        "excavation_rate_per_m", "excavation_rate_in_grid",
+        "edge_weight_formula", "neighbourhood", "descent_constraint"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "objective": { "type": "string" },
+        "tier_schedule": {
+          "type": "array", "minItems": 6, "maxItems": 6,
+          "items": {
+            "type": "object",
+            "required": ["tier_index", "cost_per_m", "support_class"],
+            "properties": {
+              "tier_index": { "type": "integer", "minimum": 0, "maximum": 5 },
+              "q_min_exclusive": { "type": "number", "minimum": 0 },
+              "q_max_inclusive": { "type": ["number", "null"], "exclusiveMinimum": 0 },
+              "cost_per_m": { "type": "number", "exclusiveMinimum": 0 },
+              "support_class": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "fault_single_floor_per_m": { "type": "number", "exclusiveMinimum": 0 },
+        "fault_multi_floor_per_m": { "type": "number", "exclusiveMinimum": 0 },
+        "fault_floor_rule": { "type": "string" },
+        "excavation_rate_per_m": { "type": "number", "minimum": 0 },
+        "excavation_rate_in_grid": {
+          "const": false,
+          "description": "The excavation rate is added per edge by the objective, never baked into cost_grid.npz."
+        },
+        "edge_weight_formula": { "type": "string" },
+        "neighbourhood": { "const": 26 },
+        "max_grade": { "type": "number", "exclusiveMinimum": 0 },
+        "descent_constraint": { "type": "string" },
+        "tier_histogram_passable": {
+          "type": "array", "minItems": 6, "maxItems": 6,
+          "items": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+
+    "geology": {
+      "type": "object",
+      "required": ["q_regime", "q_reference_lattice_m", "resolution_independence"],
+      "additionalProperties": true,
+      "properties": {
+        "q_regime": { "enum": ["competent", "mixed", "poor_dominated"] },
+        "q_reference_lattice_m": { "type": "number", "exclusiveMinimum": 0 },
+        "resolution_independence": { "type": "string" }
+      }
+    },
+
+    "fault_system": {
+      "enum": ["none", "single", "two_crossing", "conjugate_pair"]
+    },
+    "faults": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id", "name", "trace_plan_m", "dip_deg", "dip_direction_deg",
+          "damage_half_width_m", "rl_range_m"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "trace_plan_m": {
+            "type": "array", "minItems": 2,
+            "items": {
+              "type": "array", "minItems": 2, "maxItems": 2,
+              "items": { "type": "number" }
+            }
+          },
+          "dip_deg": { "type": "number", "exclusiveMinimum": 0, "maximum": 90 },
+          "dip_direction_deg": { "type": "number", "minimum": 0, "maximum": 360 },
+          "damage_half_width_m": { "type": "number", "exclusiveMinimum": 0 },
+          "rl_range_m": {
+            "type": "array", "minItems": 2, "maxItems": 2,
+            "items": { "type": "number" }
+          }
+        }
+      }
+    },
+
+    "portals": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["label", "world_m", "voxel", "n_voxels"],
+        "properties": {
+          "label": { "type": "string" },
+          "site": { "enum": ["south", "north", "east", "west"] },
+          "world_m": {
+            "type": "array", "minItems": 3, "maxItems": 3,
+            "items": { "type": "number" }
+          },
+          "voxel": {
+            "type": "array", "minItems": 3, "maxItems": 3,
+            "items": { "type": "integer", "minimum": 0 }
+          },
+          "radius_m": { "type": "number", "minimum": 0 },
+          "n_voxels": { "type": "integer", "minimum": 1 }
+        }
+      }
+    },
+
+    "zones": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["label", "polygon_plan_m", "sublevel_rl_m",
+                     "rl_thickness_m", "n_voxels"],
+        "properties": {
+          "label": { "type": "string" },
+          "polygon_plan_m": {
+            "type": "array", "minItems": 3,
+            "items": {
+              "type": "array", "minItems": 2, "maxItems": 2,
+              "items": { "type": "number" }
+            }
+          },
+          "sublevel_rl_m": { "type": "number" },
+          "rl_thickness_m": { "type": "number", "exclusiveMinimum": 0 },
+          "tonnage_mt": { "type": "number", "minimum": 0 },
+          "mean_grade_g_t": { "type": "number", "minimum": 0 },
+          "n_voxels": { "type": "integer", "minimum": 1 }
+        }
+      }
+    },
+
+    "topology_families": {
+      "type": "object",
+      "required": ["n_zones", "n_sublevels", "applicable", "gating_note"],
+      "properties": {
+        "n_zones": { "type": "integer", "minimum": 1 },
+        "n_sublevels": { "type": "integer", "minimum": 1 },
+        "level_grouping_tolerance_m": { "type": "number", "minimum": 0 },
+        "applicable": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "enum": ["sublevel_fan", "two_branch", "three_branch",
+                     "single_junction", "sequential_ramp", "chained_fan",
+                     "hybrid_chained_fan_branch", "spiral_decline",
+                     "switchback_decline", "twin_decline",
+                     "conventional_decline", "steiner_insertion"]
+          }
+        },
+        "gating_note": { "type": "string" }
+      }
+    },
+
+    "generation": {
+      "type": "object",
+      "required": ["seed", "generator_version", "generator_command"],
+      "properties": {
+        "seed": { "type": "integer" },
+        "generator_version": { "type": "string" },
+        "generator_command": { "type": "string" },
+        "created_utc": { "type": "string" },
+        "shipped_in_git": { "type": "boolean" }
+      }
+    },
+
+    "varied_axis": {
+      "type": "object",
+      "required": ["group", "axis", "value"],
+      "properties": {
+        "group": {
+          "enum": ["crossing_grid", "portal_sweep", "zone_count",
+                   "scale_ladder", "haulage_ratio"]
+        },
+        "axis": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "value": { "type": "object" },
+        "held_fixed_ref": { "type": ["string", "null"] },
+        "duplicate_of": { "type": "string" }
+      }
+    },
+
+    "checksums": {
+      "type": "object",
+      "required": ["cost_grid.npz"],
+      "properties": {
+        "cost_grid.npz": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "size_bytes": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

@@ -1,0 +1,1369 @@
+{
+  "instance_id": "portal-north",
+  "schema_version": "2.1",
+  "benchmark_version": "2.1.0",
+  "reference_type": "best_known",
+  "reference_type_raw": "best_known",
+  "reference_type_constrained": "best_known",
+  "normative_track": "constrained",
+  "objective": "Total raw voxel cost of a portal-rooted, monotonically descending network reaching every production zone, with edge weight w(u,v) = (cost_grid[v] + excavation_rate_per_m) * effective_length_m(u,v) over the 26-neighbourhood. Excludes buildability post-processing, operating cost and portal establishment.",
+  "reference_cost": 2822644.2109,
+  "reference_cost_buildable": 8547673.1507,
+  "reference_cost_constrained": 8547673.1507,
+  "reference_cost_total": 21794508.1002,
+  "constrained_admissible": true,
+  "n_families_verified": 4,
+  "n_families_planned": 4,
+  "constrained_note": "reference_cost_constrained is the cheapest network that was planned under the geometric standard AND passed the shipped verifier. Families that only carry cost_buildable were not planned constrained; their figure is a geometric estimate for a network nobody has shown can be built, retained as evidence and never used as a reference.",
+  "best_topology": "chained_fan",
+  "best_topology_buildable": "sequential_ramp",
+  "best_topology_constrained": "sequential_ramp",
+  "best_topology_total": "sequential_ramp",
+  "lower_bound": {
+    "value": 2306028.9889,
+    "method": "pairwise_divergence",
+    "valid": true,
+    "track": "raw",
+    "note": "Pairwise-divergence bound: for the binding terminal pair [2, 3], min over all nodes v of d(portal,v) + d(v,zone_i) + d(v,zone_j). Valid because the two root-to-terminal paths in any arborescence separate at some v and are arc-disjoint thereafter. Arcs are priced at (min(cost[u], cost[v]) + excavation_rate) * length so the bound stays valid regardless of which traversal direction the reference solver charged for a segment. The bound applies to all seven topology families: each produces a feasible portal-rooted subgraph over this arc set, and the families that charge a shared ramp once per branch report at least their subgraph cost.",
+    "components": {
+      "max_terminal_shortest_path": 1676464.4039,
+      "pairwise_divergence": 2306028.9889
+    },
+    "runtime_s": 3.9
+  },
+  "lower_bounds": {
+    "raw": {
+      "value": 2306028.9889,
+      "method": "pairwise_divergence",
+      "valid": true,
+      "track": "raw",
+      "note": "Pairwise-divergence bound: for the binding terminal pair [2, 3], min over all nodes v of d(portal,v) + d(v,zone_i) + d(v,zone_j). Valid because the two root-to-terminal paths in any arborescence separate at some v and are arc-disjoint thereafter. Arcs are priced at (min(cost[u], cost[v]) + excavation_rate) * length so the bound stays valid regardless of which traversal direction the reference solver charged for a segment. The bound applies to all seven topology families: each produces a feasible portal-rooted subgraph over this arc set, and the families that charge a shared ramp once per branch report at least their subgraph cost.",
+      "components": {
+        "max_terminal_shortest_path": 1676464.4039,
+        "pairwise_divergence": 2306028.9889
+      },
+      "runtime_s": 3.9
+    },
+    "constrained": {
+      "value": 3542328.3734941375,
+      "method": "geometric_grade_floor",
+      "valid": true,
+      "track": "constrained",
+      "components": {
+        "raw_relaxation": 2306028.9889,
+        "geometric_grade_floor": 3542328.3734941375,
+        "raw_best_known_conditional": 2822644.2109
+      },
+      "conditional_components": [
+        "raw_best_known_conditional"
+      ],
+      "audit": {
+        "value": 3542328.3734941375,
+        "method": "geometric_grade_floor",
+        "capex_floor": 3542328.3734941375,
+        "portal_establishment": 0.0,
+        "opex_floor": 0.0,
+        "min_length_m": 1262.007329614214,
+        "length_binds_on": "grade",
+        "binding_zone": "Z4",
+        "binding_zone_index": 3,
+        "drop_m": 247.5,
+        "grade_length_m": 1262.007329614214,
+        "straight_line_m": 253.76714822576565,
+        "max_grade": 0.2,
+        "sin_theta_max": 0.19611613513818404,
+        "portal_rl_m": 392.5,
+        "zone_top_rl_m": 145.0,
+        "unit_cost_per_m": 1806.9,
+        "excavation_rate_per_m": 1000.0,
+        "cost_per_m": 2806.9,
+        "n_portals": 0,
+        "portal_establishment_cost": 0.0,
+        "derivation": "L >= 247.5 m / sin(atan(0.2)) = 1262.0 m; straight line 253.8 m; L >= 1262.0 m. cost >= 1262.0 * ($1,806.9 + $1,000.0) = $3,542,328 = $3,542,328"
+      }
+    },
+    "total": {
+      "value": 13867731.201363118,
+      "method": "geometric_grade_floor+opex_floor",
+      "valid": true,
+      "track": "total",
+      "components": {
+        "raw_relaxation": 2306028.9889,
+        "geometric_grade_floor+opex_floor": 13867731.201363118,
+        "raw_best_known_conditional": 2822644.2109
+      },
+      "conditional_components": [
+        "raw_best_known_conditional"
+      ],
+      "audit": {
+        "value": 13867731.201363118,
+        "method": "geometric_grade_floor+opex_floor",
+        "capex_floor": 3542328.3734941375,
+        "portal_establishment": 0.0,
+        "opex_floor": 10325402.827868981,
+        "min_length_m": 1262.007329614214,
+        "length_binds_on": "grade",
+        "binding_zone": "Z4",
+        "binding_zone_index": 3,
+        "drop_m": 247.5,
+        "grade_length_m": 1262.007329614214,
+        "straight_line_m": 253.76714822576565,
+        "max_grade": 0.2,
+        "sin_theta_max": 0.19611613513818404,
+        "portal_rl_m": 392.5,
+        "zone_top_rl_m": 145.0,
+        "unit_cost_per_m": 1806.9,
+        "excavation_rate_per_m": 1000.0,
+        "cost_per_m": 2806.9,
+        "n_portals": 1,
+        "portal_establishment_cost": 0.0,
+        "derivation": "L >= 247.5 m / sin(atan(0.2)) = 1262.0 m; straight line 253.8 m; L >= 1262.0 m. cost >= 1262.0 * ($1,806.9 + $1,000.0) = $3,542,328 + opex floor $10,325,403 = $13,867,731",
+        "opex_audit": {
+          "value": 10325402.827868981,
+          "haulage_floor": 10237968.395292336,
+          "vent_pump_floor": 87434.43257664566,
+          "longest_required_length_m": 1262.007329614214,
+          "voxel_length_safety_divisor": 1.7320508075688772,
+          "opex_model": {
+            "haul_cost_per_t_km": 0.35,
+            "haul_vert_cost_per_t_m": 0.012,
+            "vent_cost_per_m_yr": 12.0,
+            "pump_cost_per_m_yr_m_depth": 0.03,
+            "mine_life_years": 10.0
+          },
+          "per_zone": [
+            {
+              "label": "Z1",
+              "tonnes": 1400000.0,
+              "min_haul_m": 344.1838171675129,
+              "min_lift_m": 72.5,
+              "binds": "grade",
+              "cost": 1386650.0704120812
+            },
+            {
+              "label": "Z2",
+              "tonnes": 1100000.0,
+              "min_haul_m": 650.12498798308,
+              "min_lift_m": 132.5,
+              "binds": "grade",
+              "cost": 1999298.120373486
+            },
+            {
+              "label": "Z3",
+              "tonnes": 950000.0,
+              "min_haul_m": 956.066158798647,
+              "min_lift_m": 192.5,
+              "binds": "grade",
+              "cost": 2512391.99780055
+            },
+            {
+              "label": "Z4",
+              "tonnes": 1250000.0,
+              "min_haul_m": 1262.007329614214,
+              "min_lift_m": 252.5,
+              "binds": "grade",
+              "cost": 4339628.206706218
+            }
+          ],
+          "pumping_included": false,
+          "derivation": "haulage >= sum_k tonnes_k * (L_k/1000 * $0.35/t-km + lift_k * $0.012/t-m) = $10,237,968; vent >= 1262.0/sqrt(3) m * $12/m-yr * 10 yr = $87,434; pumping dropped (non-negative)"
+        }
+      }
+    }
+  },
+  "gap_to_lower_bound": 0.224028,
+  "gaps_to_lower_bound": {
+    "raw": 0.224028,
+    "constrained": 1.41301,
+    "total": 0.571599
+  },
+  "exactness_note": "The cheapest family (chained_fan) uses a heuristic search, so reference_cost is a best-known bound and may be improvable. Exact-search families on this instance were still independently verified; see per_family[].exactness_check.",
+  "per_family": [
+    {
+      "family": "chained_fan",
+      "search": "heuristic",
+      "cost": 2822644.2109,
+      "cost_buildable": 8906726.8331,
+      "total_length_m": 506.656,
+      "junctions_voxel": [
+        [
+          56,
+          51,
+          64
+        ],
+        [
+          69,
+          42,
+          51
+        ],
+        [
+          62,
+          42,
+          40
+        ],
+        [
+          68,
+          50,
+          28
+        ]
+      ],
+      "junctions_world_m": [
+        [
+          282.5,
+          257.5,
+          322.5
+        ],
+        [
+          347.5,
+          212.5,
+          257.5
+        ],
+        [
+          312.5,
+          212.5,
+          202.5
+        ],
+        [
+          342.5,
+          252.5,
+          142.5
+        ]
+      ],
+      "support_class_length_m": {
+        "Exceptionally poor (Q<0.04): steel sets + shotcrete + spiling": 50.372,
+        "Extremely poor (Q 0.04-0.10): heavy systematic bolt+mesh+shotcrete": 48.534,
+        "Very poor (Q 0.10-0.34): systematic bolt+mesh+shotcrete": 293.13,
+        "Poor (Q 0.34-1.18): systematic bolting + shotcrete": 114.62
+      },
+      "buildable_summary": {
+        "ramp_length_m": 1465.367136664737,
+        "worst_grade": 0.2,
+        "worst_min_radius_m": 25.49999994101636,
+        "n_spiral_ramps": 0,
+        "method": "lattice"
+      },
+      "topology_label": "chained_fan (4 levels)",
+      "constrained_feasible": true,
+      "verified": true,
+      "verify": {
+        "ok": true,
+        "n_violations": 0,
+        "by_check": {},
+        "stats": {
+          "segments": 8,
+          "total_length_m": 1540.5,
+          "worst_grade": 0.2,
+          "worst_turn_radius_m": 25.5,
+          "bore_samples_out_of_ground": 0,
+          "terminal_endpoints": 3,
+          "zero_length_segments": 1,
+          "closest_approach_m": 22.6,
+          "portal_daylight_samples": 0,
+          "level_drives_turn_exempt": 3,
+          "junction_turnouts": 8,
+          "worst_turnout_deg": 9.0,
+          "limits": "grade<=0.20  R>=25m  span=5m  pillar>=5m  turnout<=10m from a junction, <=90deg  portal daylight allowed <=100m from a collar"
+        }
+      },
+      "cost_constrained": 8906726.8331,
+      "cost_total": 22067839.8592,
+      "opex": {
+        "haulage": 11366791.79161239,
+        "vent_pump": 294321.2344571866,
+        "total": 11661113.026069578,
+        "mine_life_years": 10.0,
+        "basis": "buildable",
+        "network_length_m": 1716.464166991298,
+        "n_portal_exits": 1.0,
+        "portal_establishment": 1500000.0
+      }
+    },
+    {
+      "family": "twin_decline",
+      "search": "heuristic",
+      "cost": 2994635.8125,
+      "cost_buildable": 9673717.7111,
+      "total_length_m": 546.017,
+      "junctions_voxel": [
+        [
+          56,
+          58,
+          63
+        ],
+        [
+          65,
+          47,
+          51
+        ],
+        [
+          65,
+          47,
+          39
+        ],
+        [
+          65,
+          47,
+          27
+        ]
+      ],
+      "junctions_world_m": [
+        [
+          282.5,
+          292.5,
+          317.5
+        ],
+        [
+          327.5,
+          237.5,
+          257.5
+        ],
+        [
+          327.5,
+          237.5,
+          197.5
+        ],
+        [
+          327.5,
+          237.5,
+          137.5
+        ]
+      ],
+      "support_class_length_m": {
+        "Exceptionally poor (Q<0.04): steel sets + shotcrete + spiling": 57.426,
+        "Extremely poor (Q 0.04-0.10): heavy systematic bolt+mesh+shotcrete": 52.426,
+        "Very poor (Q 0.10-0.34): systematic bolt+mesh+shotcrete": 271.797,
+        "Poor (Q 0.34-1.18): systematic bolting + shotcrete": 164.367
+      },
+      "buildable_summary": {
+        "ramp_length_m": 1457.0698010820533,
+        "worst_grade": 0.2,
+        "worst_min_radius_m": 25.499999962564285,
+        "n_spiral_ramps": 0,
+        "method": "lattice"
+      },
+      "topology_label": "twin_decline (1+3 levels)",
+      "constrained_feasible": false,
+      "verified": false,
+      "verify": {
+        "ok": false,
+        "n_violations": 1,
+        "by_check": {
+          "continuity": 1
+        },
+        "stats": {
+          "segments": 8,
+          "total_length_m": 1620.5,
+          "worst_grade": 0.2,
+          "worst_turn_radius_m": 25.5,
+          "bore_samples_out_of_ground": 0,
+          "terminal_endpoints": 6,
+          "zero_length_segments": 0,
+          "closest_approach_m": 8.9,
+          "portal_daylight_samples": 0,
+          "level_drives_turn_exempt": 4,
+          "junction_turnouts": 8,
+          "worst_turnout_deg": 9.0,
+          "limits": "grade<=0.20  R>=25m  span=5m  pillar>=5m  turnout<=10m from a junction, <=90deg  portal daylight allowed <=100m from a collar"
+        }
+      },
+      "cost_constrained": null,
+      "cost_total": null,
+      "opex": {
+        "haulage": 11448157.907484336,
+        "vent_pump": 303287.06056053453,
+        "total": 11751444.96804487,
+        "mine_life_years": 10.0,
+        "basis": "buildable",
+        "network_length_m": 1785.31408692692,
+        "n_portal_exits": 1.0,
+        "portal_establishment": 1500000.0
+      }
+    },
+    {
+      "family": "spiral_decline",
+      "search": "heuristic",
+      "cost": 3135078.7031,
+      "cost_buildable": 9406923.8079,
+      "total_length_m": 578.967,
+      "junctions_voxel": [
+        [
+          64,
+          46,
+          63
+        ],
+        [
+          64,
+          46,
+          51
+        ],
+        [
+          64,
+          46,
+          39
+        ],
+        [
+          64,
+          46,
+          27
+        ]
+      ],
+      "junctions_world_m": [
+        [
+          322.5,
+          232.5,
+          317.5
+        ],
+        [
+          322.5,
+          232.5,
+          257.5
+        ],
+        [
+          322.5,
+          232.5,
+          197.5
+        ],
+        [
+          322.5,
+          232.5,
+          137.5
+        ]
+      ],
+      "support_class_length_m": {
+        "Exceptionally poor (Q<0.04): steel sets + shotcrete + spiling": 50.372,
+        "Extremely poor (Q 0.04-0.10): heavy systematic bolt+mesh+shotcrete": 67.426,
+        "Very poor (Q 0.10-0.34): systematic bolt+mesh+shotcrete": 294.726,
+        "Poor (Q 0.34-1.18): systematic bolting + shotcrete": 140.229,
+        "Fair (Q 1.18-6.0): spot bolting": 26.213
+      },
+      "buildable_summary": {
+        "ramp_length_m": 1447.1524573495217,
+        "worst_grade": 0.2,
+        "worst_min_radius_m": 25.49999999990842,
+        "n_spiral_ramps": 0,
+        "method": "lattice"
+      },
+      "topology_label": "spiral_decline (4 levels)",
+      "constrained_feasible": true,
+      "verified": true,
+      "verify": {
+        "ok": true,
+        "n_violations": 0,
+        "by_check": {},
+        "stats": {
+          "segments": 8,
+          "total_length_m": 1642.4,
+          "worst_grade": 0.2,
+          "worst_turn_radius_m": 25.5,
+          "bore_samples_out_of_ground": 0,
+          "terminal_endpoints": 5,
+          "zero_length_segments": 0,
+          "closest_approach_m": 10.5,
+          "portal_daylight_samples": 0,
+          "level_drives_turn_exempt": 4,
+          "junction_turnouts": 9,
+          "worst_turnout_deg": 9.0,
+          "limits": "grade<=0.20  R>=25m  span=5m  pillar>=5m  turnout<=10m from a junction, <=90deg  portal daylight allowed <=100m from a collar"
+        }
+      },
+      "cost_constrained": 9406923.8079,
+      "cost_total": 22433535.2863,
+      "opex": {
+        "haulage": 11133687.56421677,
+        "vent_pump": 392923.91414111457,
+        "total": 11526611.478357885,
+        "mine_life_years": 10.0,
+        "basis": "buildable",
+        "network_length_m": 2338.0809496117326,
+        "n_portal_exits": 1.0,
+        "portal_establishment": 1500000.0
+      }
+    },
+    {
+      "family": "switchback_decline",
+      "search": "heuristic",
+      "cost": 3135078.7031,
+      "cost_buildable": 9406923.8079,
+      "total_length_m": 578.967,
+      "junctions_voxel": [
+        [
+          64,
+          46,
+          63
+        ],
+        [
+          64,
+          46,
+          51
+        ],
+        [
+          64,
+          46,
+          39
+        ],
+        [
+          64,
+          46,
+          27
+        ]
+      ],
+      "junctions_world_m": [
+        [
+          322.5,
+          232.5,
+          317.5
+        ],
+        [
+          322.5,
+          232.5,
+          257.5
+        ],
+        [
+          322.5,
+          232.5,
+          197.5
+        ],
+        [
+          322.5,
+          232.5,
+          137.5
+        ]
+      ],
+      "support_class_length_m": {
+        "Exceptionally poor (Q<0.04): steel sets + shotcrete + spiling": 50.372,
+        "Extremely poor (Q 0.04-0.10): heavy systematic bolt+mesh+shotcrete": 67.426,
+        "Very poor (Q 0.10-0.34): systematic bolt+mesh+shotcrete": 294.726,
+        "Poor (Q 0.34-1.18): systematic bolting + shotcrete": 140.229,
+        "Fair (Q 1.18-6.0): spot bolting": 26.213
+      },
+      "buildable_summary": {
+        "ramp_length_m": 1447.1524573495217,
+        "worst_grade": 0.2,
+        "worst_min_radius_m": 25.49999999990842,
+        "n_spiral_ramps": 0,
+        "method": "lattice"
+      },
+      "topology_label": "switchback_decline (4 levels)",
+      "constrained_feasible": true,
+      "verified": true,
+      "verify": {
+        "ok": true,
+        "n_violations": 0,
+        "by_check": {},
+        "stats": {
+          "segments": 8,
+          "total_length_m": 1642.4,
+          "worst_grade": 0.2,
+          "worst_turn_radius_m": 25.5,
+          "bore_samples_out_of_ground": 0,
+          "terminal_endpoints": 5,
+          "zero_length_segments": 0,
+          "closest_approach_m": 10.5,
+          "portal_daylight_samples": 0,
+          "level_drives_turn_exempt": 4,
+          "junction_turnouts": 9,
+          "worst_turnout_deg": 9.0,
+          "limits": "grade<=0.20  R>=25m  span=5m  pillar>=5m  turnout<=10m from a junction, <=90deg  portal daylight allowed <=100m from a collar"
+        }
+      },
+      "cost_constrained": 9406923.8079,
+      "cost_total": 22433535.2863,
+      "opex": {
+        "haulage": 11133687.56421677,
+        "vent_pump": 392923.91414111457,
+        "total": 11526611.478357885,
+        "mine_life_years": 10.0,
+        "basis": "buildable",
+        "network_length_m": 2338.0809496117326,
+        "n_portal_exits": 1.0,
+        "portal_establishment": 1500000.0
+      }
+    },
+    {
+      "family": "single_junction",
+      "search": "exact",
+      "cost": 3538500.6875,
+      "cost_buildable": 12873036.439,
+      "total_length_m": 662.709,
+      "junctions_voxel": [
+        [
+          56,
+          44,
+          63
+        ]
+      ],
+      "junctions_world_m": [
+        [
+          282.5,
+          222.5,
+          317.5
+        ]
+      ],
+      "support_class_length_m": {
+        "Exceptionally poor (Q<0.04): steel sets + shotcrete + spiling": 31.463,
+        "Extremely poor (Q 0.04-0.10): heavy systematic bolt+mesh+shotcrete": 137.905,
+        "Very poor (Q 0.10-0.34): systematic bolt+mesh+shotcrete": 292.757,
+        "Poor (Q 0.34-1.18): systematic bolting + shotcrete": 148.158,
+        "Fair (Q 1.18-6.0): spot bolting": 52.426
+      },
+      "buildable_summary": {
+        "ramp_length_m": 2360.1937408971826,
+        "worst_grade": 0.20000000000000115,
+        "worst_min_radius_m": 25.499999716063844,
+        "n_spiral_ramps": 0,
+        "method": "lattice"
+      },
+      "topology_label": "single_junction",
+      "constrained_feasible": false,
+      "verified": false,
+      "verify": {
+        "ok": false,
+        "n_violations": 3,
+        "by_check": {
+          "separation": 3
+        },
+        "stats": {
+          "segments": 5,
+          "total_length_m": 2360.2,
+          "worst_grade": 0.2,
+          "worst_turn_radius_m": 25.5,
+          "bore_samples_out_of_ground": 0,
+          "terminal_endpoints": 4,
+          "zero_length_segments": 1,
+          "closest_approach_m": 0.0,
+          "portal_daylight_samples": 7,
+          "level_drives_turn_exempt": 3,
+          "junction_turnouts": 1,
+          "worst_turnout_deg": 4.5,
+          "limits": "grade<=0.20  R>=25m  span=5m  pillar>=5m  turnout<=10m from a junction, <=90deg  portal daylight allowed <=100m from a collar"
+        }
+      },
+      "cost_constrained": null,
+      "cost_total": null,
+      "opex": {
+        "haulage": 11311513.353961045,
+        "vent_pump": 396972.0320695247,
+        "total": 11708485.38603057,
+        "mine_life_years": 10.0,
+        "basis": "buildable",
+        "network_length_m": 2325.5944842469953,
+        "n_portal_exits": 1.0,
+        "portal_establishment": 1500000.0
+      },
+      "exactness_check": {
+        "performed": true,
+        "independent_argmin_matches": true,
+        "junction_voxel_matches": true,
+        "max_rel_cost_delta": 4.7418422721124925e-08,
+        "independent_cost": 3538500.5197,
+        "method": "independent float64 CSR graph + scipy.sparse.csgraph.dijkstra + independent argmin; shares no code or distance fields with the reference solver"
+      }
+    },
+    {
+      "family": "sequential_ramp",
+      "search": "heuristic",
+      "cost": 3543292.75,
+      "cost_buildable": 8547673.1507,
+      "total_length_m": 624.974,
+      "junctions_voxel": [],
+      "junctions_world_m": [],
+      "support_class_length_m": {
+        "Exceptionally poor (Q<0.04): steel sets + shotcrete + spiling": 102.317,
+        "Extremely poor (Q 0.04-0.10): heavy systematic bolt+mesh+shotcrete": 37.802,
+        "Very poor (Q 0.10-0.34): systematic bolt+mesh+shotcrete": 316.951,
+        "Poor (Q 0.34-1.18): systematic bolting + shotcrete": 167.905
+      },
+      "buildable_summary": {
+        "ramp_length_m": 1473.6281196783466,
+        "worst_grade": 0.2,
+        "worst_min_radius_m": 25.499999999753985,
+        "n_spiral_ramps": 0,
+        "method": "lattice"
+      },
+      "topology_label": "sequential_ramp",
+      "constrained_feasible": true,
+      "verified": true,
+      "verify": {
+        "ok": true,
+        "n_violations": 0,
+        "by_check": {},
+        "stats": {
+          "segments": 4,
+          "total_length_m": 1473.6,
+          "worst_grade": 0.2,
+          "worst_turn_radius_m": 25.5,
+          "bore_samples_out_of_ground": 0,
+          "terminal_endpoints": 2,
+          "zero_length_segments": 0,
+          "closest_approach_m": 20.4,
+          "portal_daylight_samples": 0,
+          "level_drives_turn_exempt": 0,
+          "junction_turnouts": 11,
+          "worst_turnout_deg": 9.0,
+          "limits": "grade<=0.20  R>=25m  span=5m  pillar>=5m  turnout<=10m from a junction, <=90deg  portal daylight allowed <=100m from a collar"
+        }
+      },
+      "cost_constrained": 8547673.1507,
+      "cost_total": 21794508.1002,
+      "opex": {
+        "haulage": 11438188.422058947,
+        "vent_pump": 308646.52741452557,
+        "total": 11746834.949473472,
+        "mine_life_years": 10.0,
+        "basis": "buildable",
+        "network_length_m": 1833.6300824905902,
+        "n_portal_exits": 1.0,
+        "portal_establishment": 1500000.0
+      }
+    },
+    {
+      "family": "two_branch",
+      "search": "exact",
+      "cost": 3624784.0625,
+      "cost_buildable": 12375269.6088,
+      "total_length_m": 691.906,
+      "junctions_voxel": [
+        [
+          54,
+          55,
+          64
+        ],
+        [
+          67,
+          44,
+          51
+        ]
+      ],
+      "junctions_world_m": [
+        [
+          272.5,
+          277.5,
+          322.5
+        ],
+        [
+          337.5,
+          222.5,
+          257.5
+        ]
+      ],
+      "support_class_length_m": {
+        "Exceptionally poor (Q<0.04): steel sets + shotcrete + spiling": 43.052,
+        "Extremely poor (Q 0.04-0.10): heavy systematic bolt+mesh+shotcrete": 53.534,
+        "Very poor (Q 0.10-0.34): systematic bolt+mesh+shotcrete": 367.415,
+        "Poor (Q 0.34-1.18): systematic bolting + shotcrete": 200.834,
+        "Fair (Q 1.18-6.0): spot bolting": 27.071
+      },
+      "buildable_summary": {
+        "ramp_length_m": 2182.1558315031143,
+        "worst_grade": 0.20000000000000137,
+        "worst_min_radius_m": 25.499999830090438,
+        "n_spiral_ramps": 0,
+        "method": "lattice"
+      },
+      "topology_label": "two_branch",
+      "constrained_feasible": false,
+      "verified": false,
+      "verify": {
+        "ok": false,
+        "n_violations": 2,
+        "by_check": {
+          "separation": 2
+        },
+        "stats": {
+          "segments": 6,
+          "total_length_m": 2202.2,
+          "worst_grade": 0.2,
+          "worst_turn_radius_m": 25.5,
+          "bore_samples_out_of_ground": 0,
+          "terminal_endpoints": 4,
+          "zero_length_segments": 1,
+          "closest_approach_m": 0.0,
+          "portal_daylight_samples": 2,
+          "level_drives_turn_exempt": 3,
+          "junction_turnouts": 4,
+          "worst_turnout_deg": 9.0,
+          "limits": "grade<=0.20  R>=25m  span=5m  pillar>=5m  turnout<=10m from a junction, <=90deg  portal daylight allowed <=100m from a collar"
+        }
+      },
+      "cost_constrained": null,
+      "cost_total": null,
+      "opex": {
+        "haulage": 10982000.173328994,
+        "vent_pump": 388599.14028612897,
+        "total": 11370599.313615123,
+        "mine_life_years": 10.0,
+        "basis": "buildable",
+        "network_length_m": 2356.7940184018653,
+        "n_portal_exits": 1.0,
+        "portal_establishment": 1500000.0
+      },
+      "exactness_check": {
+        "performed": true,
+        "independent_argmin_matches": true,
+        "junction_voxel_matches": true,
+        "max_rel_cost_delta": 2.118995840374682e-08,
+        "independent_cost": 3624783.9857,
+        "method": "independent float64 CSR graph + scipy.sparse.csgraph.dijkstra + independent argmin; shares no code or distance fields with the reference solver",
+        "note": "Exhaustive over all 3 consecutive level partitions."
+      }
+    },
+    {
+      "family": "conventional_decline",
+      "search": "rule",
+      "cost": 3976379.9375,
+      "cost_buildable": 10565296.0445,
+      "total_length_m": 629.698,
+      "junctions_voxel": [
+        [
+          63,
+          54,
+          63
+        ],
+        [
+          63,
+          54,
+          51
+        ],
+        [
+          63,
+          54,
+          39
+        ],
+        [
+          63,
+          54,
+          27
+        ]
+      ],
+      "junctions_world_m": [
+        [
+          317.5,
+          272.5,
+          317.5
+        ],
+        [
+          317.5,
+          272.5,
+          257.5
+        ],
+        [
+          317.5,
+          272.5,
+          197.5
+        ],
+        [
+          317.5,
+          272.5,
+          137.5
+        ]
+      ],
+      "support_class_length_m": {
+        "Exceptionally poor (Q<0.04): steel sets + shotcrete + spiling": 220.355,
+        "Extremely poor (Q 0.04-0.10): heavy systematic bolt+mesh+shotcrete": 99.996,
+        "Very poor (Q 0.10-0.34): systematic bolt+mesh+shotcrete": 135.96,
+        "Poor (Q 0.34-1.18): systematic bolting + shotcrete": 149.726,
+        "Fair (Q 1.18-6.0): spot bolting": 23.66
+      },
+      "buildable_summary": {
+        "ramp_length_m": 1439.188282041828,
+        "worst_grade": 0.2,
+        "worst_min_radius_m": 25.499999991858953,
+        "n_spiral_ramps": 0,
+        "method": "lattice"
+      },
+      "topology_label": "conventional_decline (4 levels)",
+      "constrained_feasible": false,
+      "verified": false,
+      "verify": {
+        "ok": false,
+        "n_violations": 1,
+        "by_check": {
+          "continuity": 1
+        },
+        "stats": {
+          "segments": 8,
+          "total_length_m": 1701.4,
+          "worst_grade": 0.2,
+          "worst_turn_radius_m": 25.5,
+          "bore_samples_out_of_ground": 0,
+          "terminal_endpoints": 6,
+          "zero_length_segments": 0,
+          "closest_approach_m": 6.7,
+          "portal_daylight_samples": 0,
+          "level_drives_turn_exempt": 4,
+          "junction_turnouts": 11,
+          "worst_turnout_deg": 9.0,
+          "limits": "grade<=0.20  R>=25m  span=5m  pillar>=5m  turnout<=10m from a junction, <=90deg  portal daylight allowed <=100m from a collar"
+        }
+      },
+      "cost_constrained": null,
+      "cost_total": null,
+      "opex": {
+        "haulage": 11763880.037588388,
+        "vent_pump": 301427.91209898505,
+        "total": 12065307.949687373,
+        "mine_life_years": 10.0,
+        "basis": "buildable",
+        "network_length_m": 1743.6036197203598,
+        "n_portal_exits": 1.0,
+        "portal_establishment": 1500000.0
+      }
+    },
+    {
+      "family": "three_branch",
+      "search": "exact",
+      "cost": 4342539.1875,
+      "cost_buildable": 14540567.2589,
+      "total_length_m": 879.554,
+      "junctions_voxel": [
+        [
+          54,
+          55,
+          64
+        ],
+        [
+          83,
+          44,
+          52
+        ],
+        [
+          62,
+          44,
+          39
+        ]
+      ],
+      "junctions_world_m": [
+        [
+          272.5,
+          277.5,
+          322.5
+        ],
+        [
+          417.5,
+          222.5,
+          262.5
+        ],
+        [
+          312.5,
+          222.5,
+          197.5
+        ]
+      ],
+      "support_class_length_m": {
+        "Exceptionally poor (Q<0.04): steel sets + shotcrete + spiling": 68.158,
+        "Extremely poor (Q 0.04-0.10): heavy systematic bolt+mesh+shotcrete": 34.873,
+        "Very poor (Q 0.10-0.34): systematic bolt+mesh+shotcrete": 307.665,
+        "Poor (Q 0.34-1.18): systematic bolting + shotcrete": 421.913,
+        "Fair (Q 1.18-6.0): spot bolting": 46.945
+      },
+      "buildable_summary": {
+        "ramp_length_m": 2650.8598282703206,
+        "worst_grade": 0.20000000000000023,
+        "worst_min_radius_m": 25.499999962564285,
+        "n_spiral_ramps": 0,
+        "method": "lattice"
+      },
+      "topology_label": "three_branch",
+      "constrained_feasible": false,
+      "verified": false,
+      "verify": {
+        "ok": false,
+        "n_violations": 3,
+        "by_check": {
+          "separation": 3
+        },
+        "stats": {
+          "segments": 7,
+          "total_length_m": 2705.4,
+          "worst_grade": 0.2,
+          "worst_turn_radius_m": 25.5,
+          "bore_samples_out_of_ground": 0,
+          "terminal_endpoints": 4,
+          "zero_length_segments": 2,
+          "closest_approach_m": 0.0,
+          "portal_daylight_samples": 2,
+          "level_drives_turn_exempt": 2,
+          "junction_turnouts": 4,
+          "worst_turnout_deg": 9.0,
+          "limits": "grade<=0.20  R>=25m  span=5m  pillar>=5m  turnout<=10m from a junction, <=90deg  portal daylight allowed <=100m from a collar"
+        }
+      },
+      "cost_constrained": null,
+      "cost_total": null,
+      "opex": {
+        "haulage": 11015487.887129035,
+        "vent_pump": 458089.48098418803,
+        "total": 11473577.368113223,
+        "mine_life_years": 10.0,
+        "basis": "buildable",
+        "network_length_m": 2768.2939622813306,
+        "n_portal_exits": 1.0,
+        "portal_establishment": 1500000.0
+      },
+      "exactness_check": {
+        "performed": true,
+        "independent_argmin_matches": true,
+        "junction_voxel_matches": true,
+        "max_rel_cost_delta": 8.501529873527623e-09,
+        "independent_cost": 4342539.1506,
+        "method": "independent float64 CSR graph + scipy.sparse.csgraph.dijkstra + independent argmin; shares no code or distance fields with the reference solver",
+        "note": "Exhaustive over all 3 consecutive level partitions."
+      }
+    },
+    {
+      "family": "steiner_insertion",
+      "search": "heuristic",
+      "cost": 4434691.3281,
+      "cost_buildable": 18934742.3888,
+      "total_length_m": 895.682,
+      "junctions_voxel": [
+        [
+          83,
+          44,
+          52
+        ],
+        [
+          54,
+          59,
+          66
+        ],
+        [
+          54,
+          55,
+          64
+        ],
+        [
+          83,
+          44,
+          52
+        ],
+        [
+          50,
+          36,
+          40
+        ],
+        [
+          70,
+          63,
+          28
+        ]
+      ],
+      "junctions_world_m": [
+        [
+          417.5,
+          222.5,
+          262.5
+        ],
+        [
+          272.5,
+          297.5,
+          332.5
+        ],
+        [
+          272.5,
+          277.5,
+          322.5
+        ],
+        [
+          417.5,
+          222.5,
+          262.5
+        ],
+        [
+          252.5,
+          182.5,
+          202.5
+        ],
+        [
+          352.5,
+          317.5,
+          142.5
+        ]
+      ],
+      "support_class_length_m": {
+        "Exceptionally poor (Q<0.04): steel sets + shotcrete + spiling": 89.62,
+        "Very poor (Q 0.10-0.34): systematic bolt+mesh+shotcrete": 311.811,
+        "Poor (Q 0.34-1.18): systematic bolting + shotcrete": 459.377,
+        "Fair (Q 1.18-6.0): spot bolting": 34.873
+      },
+      "buildable_summary": {
+        "ramp_length_m": 2740.178929121359,
+        "worst_grade": 0.20000000000003945,
+        "worst_min_radius_m": 25.00033467226842,
+        "n_spiral_ramps": 1,
+        "method": "INFEASIBLE(1 unplannable legs)"
+      },
+      "topology_label": "steiner_insertion (2 Steiner pt, 4 levels)",
+      "constrained_feasible": false,
+      "verified": false,
+      "verify": {
+        "ok": false,
+        "n_violations": 1,
+        "by_check": {
+          "separation": 1
+        },
+        "stats": {
+          "segments": 10,
+          "total_length_m": 2740.2,
+          "worst_grade": 0.2,
+          "worst_turn_radius_m": 25.0,
+          "bore_samples_out_of_ground": 0,
+          "terminal_endpoints": 2,
+          "zero_length_segments": 5,
+          "closest_approach_m": 1.9,
+          "portal_daylight_samples": 13,
+          "level_drives_turn_exempt": 0,
+          "junction_turnouts": 17,
+          "worst_turnout_deg": 9.0,
+          "limits": "grade<=0.20  R>=25m  span=5m  pillar>=5m  turnout<=10m from a junction, <=90deg  portal daylight allowed <=100m from a collar"
+        }
+      },
+      "cost_constrained": null,
+      "cost_total": null,
+      "opex": {
+        "haulage": 14140740.79045419,
+        "vent_pump": 897636.2157113675,
+        "total": 15038377.006165558,
+        "mine_life_years": 10.0,
+        "basis": "buildable",
+        "network_length_m": 5325.964809182597,
+        "n_portal_exits": 1.0,
+        "portal_establishment": 1500000.0
+      }
+    },
+    {
+      "family": "hybrid_chained_fan_branch",
+      "search": "heuristic",
+      "cost": 4994305.1875,
+      "cost_buildable": 18329666.7214,
+      "total_length_m": 940.001,
+      "junctions_voxel": [
+        [
+          56,
+          51,
+          64
+        ],
+        [
+          68,
+          44,
+          52
+        ],
+        [
+          50,
+          36,
+          40
+        ],
+        [
+          70,
+          63,
+          28
+        ]
+      ],
+      "junctions_world_m": [
+        [
+          282.5,
+          257.5,
+          322.5
+        ],
+        [
+          342.5,
+          222.5,
+          262.5
+        ],
+        [
+          252.5,
+          182.5,
+          202.5
+        ],
+        [
+          352.5,
+          317.5,
+          142.5
+        ]
+      ],
+      "support_class_length_m": {
+        "Exceptionally poor (Q<0.04): steel sets + shotcrete + spiling": 106.941,
+        "Extremely poor (Q 0.04-0.10): heavy systematic bolt+mesh+shotcrete": 30.731,
+        "Very poor (Q 0.10-0.34): systematic bolt+mesh+shotcrete": 480.307,
+        "Poor (Q 0.34-1.18): systematic bolting + shotcrete": 274.829,
+        "Fair (Q 1.18-6.0): spot bolting": 47.194
+      },
+      "buildable_summary": {
+        "ramp_length_m": 3267.00715907447,
+        "worst_grade": 0.2,
+        "worst_min_radius_m": 25.49999960596855,
+        "n_spiral_ramps": 0,
+        "method": "lattice"
+      },
+      "topology_label": "hybrid_chained_fan (2L chain + 2L branch)",
+      "constrained_feasible": false,
+      "verified": false,
+      "verify": {
+        "ok": false,
+        "n_violations": 2,
+        "by_check": {
+          "separation": 2
+        },
+        "stats": {
+          "segments": 8,
+          "total_length_m": 3286.6,
+          "worst_grade": 0.2,
+          "worst_turn_radius_m": 25.5,
+          "bore_samples_out_of_ground": 0,
+          "terminal_endpoints": 3,
+          "zero_length_segments": 3,
+          "closest_approach_m": 1.6,
+          "portal_daylight_samples": 7,
+          "level_drives_turn_exempt": 1,
+          "junction_turnouts": 8,
+          "worst_turnout_deg": 9.0,
+          "limits": "grade<=0.20  R>=25m  span=5m  pillar>=5m  turnout<=10m from a junction, <=90deg  portal daylight allowed <=100m from a collar"
+        }
+      },
+      "cost_constrained": null,
+      "cost_total": null,
+      "opex": {
+        "haulage": 11229566.595361754,
+        "vent_pump": 556805.9641333935,
+        "total": 11786372.559495147,
+        "mine_life_years": 10.0,
+        "basis": "buildable",
+        "network_length_m": 3508.387492881262,
+        "n_portal_exits": 1.0,
+        "portal_establishment": 1500000.0
+      }
+    },
+    {
+      "family": "sublevel_fan",
+      "search": "exact",
+      "cost": 5354651.75,
+      "cost_buildable": 20285165.0628,
+      "total_length_m": 1088.409,
+      "junctions_voxel": [
+        [
+          54,
+          55,
+          64
+        ],
+        [
+          83,
+          44,
+          52
+        ],
+        [
+          50,
+          36,
+          40
+        ],
+        [
+          70,
+          63,
+          28
+        ]
+      ],
+      "junctions_world_m": [
+        [
+          272.5,
+          277.5,
+          322.5
+        ],
+        [
+          417.5,
+          222.5,
+          262.5
+        ],
+        [
+          252.5,
+          182.5,
+          202.5
+        ],
+        [
+          352.5,
+          317.5,
+          142.5
+        ]
+      ],
+      "support_class_length_m": {
+        "Exceptionally poor (Q<0.04): steel sets + shotcrete + spiling": 73.64,
+        "Extremely poor (Q 0.04-0.10): heavy systematic bolt+mesh+shotcrete": 13.66,
+        "Very poor (Q 0.10-0.34): systematic bolt+mesh+shotcrete": 478.236,
+        "Poor (Q 0.34-1.18): systematic bolting + shotcrete": 440.806,
+        "Fair (Q 1.18-6.0): spot bolting": 82.067
+      },
+      "buildable_summary": {
+        "ramp_length_m": 3722.9137003905144,
+        "worst_grade": 0.2,
+        "worst_min_radius_m": 25.49999960596855,
+        "n_spiral_ramps": 0,
+        "method": "lattice"
+      },
+      "topology_label": "sublevel_fan (4 levels)",
+      "constrained_feasible": false,
+      "verified": false,
+      "verify": {
+        "ok": false,
+        "n_violations": 5,
+        "by_check": {
+          "separation": 5
+        },
+        "stats": {
+          "segments": 8,
+          "total_length_m": 3722.9,
+          "worst_grade": 0.2,
+          "worst_turn_radius_m": 25.5,
+          "bore_samples_out_of_ground": 0,
+          "terminal_endpoints": 4,
+          "zero_length_segments": 4,
+          "closest_approach_m": 0.1,
+          "portal_daylight_samples": 9,
+          "level_drives_turn_exempt": 0,
+          "junction_turnouts": 6,
+          "worst_turnout_deg": 9.0,
+          "limits": "grade<=0.20  R>=25m  span=5m  pillar>=5m  turnout<=10m from a junction, <=90deg  portal daylight allowed <=100m from a collar"
+        }
+      },
+      "cost_constrained": null,
+      "cost_total": null,
+      "opex": {
+        "haulage": 11234832.267470378,
+        "vent_pump": 563317.6341451395,
+        "total": 11798149.901615517,
+        "mine_life_years": 10.0,
+        "basis": "buildable",
+        "network_length_m": 3523.878164506548,
+        "n_portal_exits": 1.0,
+        "portal_establishment": 1500000.0
+      },
+      "exactness_check": {
+        "performed": true,
+        "independent_argmin_matches": true,
+        "junction_voxel_matches": true,
+        "max_rel_cost_delta": 3.164457946422289e-08,
+        "independent_cost": 5354651.5806,
+        "method": "independent float64 CSR graph + scipy.sparse.csgraph.dijkstra + independent argmin; shares no code or distance fields with the reference solver"
+      }
+    }
+  ],
+  "environment": {
+    "solver": "MineOptimizer WP3 (wp3_steiner/run_steiner_poly.py)",
+    "solver_commit": "unknown",
+    "flood_engine": "scipy",
+    "opex_in_edge_weights": false,
+    "lattice_refinement": true,
+    "lattice_time_budget_s": null,
+    "lattice_max_expand": 4000000,
+    "buildable_method": "constrained heading-augmented A* on all candidates, then independent verification; the per-leg cap is node expansions, not wall clock, so it does not depend on machine speed",
+    "cell_size_m": 5.0,
+    "python": "3.13.13",
+    "numpy": "2.5.1",
+    "scipy": "1.18.0",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cpu_count": 12,
+    "compute": "cpu",
+    "bit_reproducible": true,
+    "reproducibility_note": "scipy true Dijkstra on CPU: bit-reproducible on any machine"
+  },
+  "solver_runtime_s": 829.49,
+  "created_utc": "2026-08-15T03:28:19Z",
+  "bounds_recomputed_utc": "2026-08-15T04:20:45Z"
+}
