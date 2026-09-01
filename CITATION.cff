@@ -1,9 +1,7 @@
 # Citation metadata for SteinerMineBench.
 #
-# NO DOI YET. The earlier Zenodo records (concept 10.5281/zenodo.21747902 and
-# version ...903) were DELETED by the author, so citing them would resolve to
-# nothing -- a dead DOI is worse than an absent one. Once the new record is
-# minted, add the concept DOI to `doi:`, `identifiers:` and `url:`.
+# NO DOI YET. Once the Zenodo record is minted, add the concept DOI to
+# `doi:`, `identifiers:` and `url:`.
 #
 # The paper is in preparation; fill in `journal` and add its `doi` to the
 # preferred-citation block once published. Editing Zenodo record metadata after

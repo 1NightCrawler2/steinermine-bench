@@ -567,21 +567,6 @@ python make_tables.py         # rebuild tables/
 weight and asserts it matches `reference.json` — an independent check that the shipped numbers
 correspond to real, connected networks on the shipped grids.
 
-### Regenerating the references
-
-Only needed if you want to rebuild the reference solutions themselves. Requires a checkout of the
-MineOptimizer WP3 solver:
-
-```bash
-export MINEOPTIMIZER_ROOT=/path/to/MineOptimizer
-python solve_reference.py --all --resume
-```
-
-Each instance runs in its own subprocess with `MINEOPT_SKIP_LOCAL=1`,
-`MINEOPT_FLOOD_ENGINE=scipy` (true Dijkstra, not the iterative stencil with its 1e-3 tolerance),
-`MINEOPT_FORCE_CPU=1` and `OPEX_IN_EDGE_WEIGHTS=False`, so the run is reproducible and the objective
-stays pure geotechnical support cost. WP1 (kriging) and WP2 (A*) are bypassed entirely.
-
 ---
 
 ## Citing
@@ -590,7 +575,7 @@ Please cite the dataset:
 
 > Hasözdemir, K. (2026). *SteinerMineBench: a benchmark suite for
 > geotechnically-weighted Steiner trees on voxel grids* (v1.0.0) [Data set].
-> Zenodo. *(DOI pending — see below.)*
+> Zenodo. *(DOI pending.)*
 
 ```bibtex
 @dataset{hasozdemir_steinerminebench_2026,
@@ -604,12 +589,9 @@ Please cite the dataset:
 }
 ```
 
-**No DOI yet.** An earlier pair of Zenodo records existed under
-`10.5281/zenodo.21747902` / `…903`; they were **deleted** and those identifiers
-now resolve to nothing, so they must not be cited. A fresh record will be minted
-for this release — once it is, its **concept DOI** (which always resolves to the
-newest version) is the one to cite, and it goes into `CITATION.cff`,
-`.zenodo.json` and the snippet above.
+**No DOI yet.** A Zenodo record will be minted for this release — once it is,
+its **concept DOI** (which always resolves to the newest version) is the one to
+cite, and it goes into `CITATION.cff`, `.zenodo.json` and the snippet above.
 
 Machine-readable metadata is in `CITATION.cff`, so GitHub's **Cite this
 repository** button and most reference managers pick it up directly.

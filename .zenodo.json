@@ -4,8 +4,6 @@
     "With the Zenodo GitHub integration enabled for this repository, pushing a",
     "version tag mints a DOI automatically and Zenodo reads this file. Paste the",
     "resulting CONCEPT DOI into CITATION.cff.",
-    "The previous records (10.5281/zenodo.21747902 and ...903) were deleted by",
-    "the author; this is a fresh record, so there is no DOI lineage to preserve.",
     "Once the accompanying paper has a DOI, add it to related_identifiers with",
     "relation 'isSupplementTo' so Zenodo cross-links the dataset and the paper."
   ],
