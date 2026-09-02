@@ -4,9 +4,12 @@
 # resolves to the newest version -- not the version-specific DOI of any single
 # release. Bump it only if Zenodo ever mints a new concept record.
 #
-# The paper is in preparation; fill in `journal` and add its `doi` to the
-# preferred-citation block once published. Editing Zenodo record metadata after
-# minting does not change the DOI, so both can be updated later.
+# No preferred-citation block: GitHub's "Cite this repository" button and
+# most reference managers (including Zenodo) display preferred-citation
+# instead of the entry above when one is present, which would surface the
+# in-preparation paper -- no journal, no DOI -- as the default citation
+# instead of this dataset's working DOI. Once the paper is published, add a
+# preferred-citation block back with its `journal` and `doi` filled in.
 #
 # `python validate.py --publication` re-checks that no unfilled template markers
 # have crept back into this file, .zenodo.json or the README.
@@ -67,16 +70,17 @@ keywords:
   - combinatorial optimisation
   - benchmark dataset
 
-preferred-citation:
-  type: article
-  title: >-
-    Geotechnically Weighted Steiner Trees on Voxel Grids: Rock-Mass-Constrained
-    Optimisation of Underground Ramp Networks for Minimum Excavation and
-    Support Cost
-  authors:
-    - family-names: "Hasözdemir"
-      given-names: "Kürşat"
-      orcid: "https://orcid.org/0000-0002-2710-9562"
-      affiliation: "Department of Mining Engineering, Istanbul Technical University"
-  journal: "In preparation"
-  year: 2026
+# preferred-citation:
+#   type: article
+#   title: >-
+#     Geotechnically Weighted Steiner Trees on Voxel Grids: Rock-Mass-Constrained
+#     Optimisation of Underground Ramp Networks for Minimum Excavation and
+#     Support Cost
+#   authors:
+#     - family-names: "Hasözdemir"
+#       given-names: "Kürşat"
+#       orcid: "https://orcid.org/0000-0002-2710-9562"
+#       affiliation: "Department of Mining Engineering, Istanbul Technical University"
+#   journal: "(fill in once published)"
+#   doi: "(fill in once published)"
+#   year: 2026
