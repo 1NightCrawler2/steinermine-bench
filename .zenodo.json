@@ -1,9 +1,11 @@
 {
   "_comment": [
     "Zenodo deposition metadata for SteinerMineBench.",
-    "With the Zenodo GitHub integration enabled for this repository, pushing a",
-    "version tag mints a DOI automatically and Zenodo reads this file. Paste the",
-    "resulting CONCEPT DOI into CITATION.cff.",
+    "v1.0.0 was published as a manual upload (concept DOI",
+    "10.5281/zenodo.22239846, now recorded in CITATION.cff). If the Zenodo",
+    "GitHub integration is enabled for this repository later, pushing a new",
+    "version tag will mint a follow-up version under the same concept record",
+    "and Zenodo will read this file for its metadata.",
     "Once the accompanying paper has a DOI, add it to related_identifiers with",
     "relation 'isSupplementTo' so Zenodo cross-links the dataset and the paper."
   ],
@@ -37,7 +39,7 @@
   ],
   "related_identifiers": [
     {
-      "identifier": "https://github.com/1NightCrawler2/SteinerMineBench",
+      "identifier": "https://github.com/1NightCrawler2/steinermine-bench",
       "relation": "isSupplementTo",
       "resource_type": "software",
       "scheme": "url"

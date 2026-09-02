@@ -1,7 +1,8 @@
 # Citation metadata for SteinerMineBench.
 #
-# NO DOI YET. Once the Zenodo record is minted, add the concept DOI to
-# `doi:`, `identifiers:` and `url:`.
+# `doi:` and `identifiers:` below carry the Zenodo CONCEPT DOI, which always
+# resolves to the newest version -- not the version-specific DOI of any single
+# release. Bump it only if Zenodo ever mints a new concept record.
 #
 # The paper is in preparation; fill in `journal` and add its `doi` to the
 # preferred-citation block once published. Editing Zenodo record metadata after
@@ -37,10 +38,14 @@ date-released: "2026-08-15"
 license: CC-BY-4.0
 license-url: "https://creativecommons.org/licenses/by/4.0/"
 
-# doi: filled in once the new Zenodo record is minted (see the header note).
-identifiers: []
+doi: "10.5281/zenodo.22239846"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.22239846"
+    description: "Concept DOI: always resolves to the most recent version"
 
-repository-code: "https://github.com/1NightCrawler2/SteinerMineBench"
+repository-code: "https://github.com/1NightCrawler2/steinermine-bench"
+url: "https://doi.org/10.5281/zenodo.22239846"
 
 authors:
   - family-names: "Hasözdemir"

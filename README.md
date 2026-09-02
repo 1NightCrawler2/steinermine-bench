@@ -2,6 +2,7 @@
 
 [![Data licence: CC BY 4.0](https://img.shields.io/badge/data-CC--BY--4.0-blue.svg)](LICENSE)
 [![Code licence: MIT](https://img.shields.io/badge/code-MIT-green.svg)](LICENSE-CODE)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22239846.svg)](https://doi.org/10.5281/zenodo.22239846)
 
 A citable benchmark suite for **geotechnically-weighted Steiner trees on 3-D voxel grids** — the
 underground mine ramp network design problem.
@@ -58,8 +59,8 @@ solution still carry a bound.
 ## Quick start (under 10 minutes)
 
 ```bash
-git clone https://github.com/1NightCrawler2/SteinerMineBench.git
-cd SteinerMineBench
+git clone https://github.com/1NightCrawler2/steinermine-bench.git
+cd steinermine-bench
 pip install -r requirements.txt        # numpy, scipy, jsonschema
 
 python score.py                        # see the frozen references
@@ -575,7 +576,7 @@ Please cite the dataset:
 
 > Hasözdemir, K. (2026). *SteinerMineBench: a benchmark suite for
 > geotechnically-weighted Steiner trees on voxel grids* (v1.0.0) [Data set].
-> Zenodo. *(DOI pending.)*
+> Zenodo. https://doi.org/10.5281/zenodo.22239846
 
 ```bibtex
 @dataset{hasozdemir_steinerminebench_2026,
@@ -584,14 +585,15 @@ Please cite the dataset:
                geotechnically-weighted {Steiner} trees on voxel grids},
   year      = {2026},
   publisher = {Zenodo},
-  version   = {1.0.0}
-  % doi and url: add once the Zenodo record is minted
+  version   = {1.0.0},
+  doi       = {10.5281/zenodo.22239846},
+  url       = {https://doi.org/10.5281/zenodo.22239846}
 }
 ```
 
-**No DOI yet.** A Zenodo record will be minted for this release — once it is,
-its **concept DOI** (which always resolves to the newest version) is the one to
-cite, and it goes into `CITATION.cff`, `.zenodo.json` and the snippet above.
+The DOI above is the **concept DOI** — it always resolves to the newest
+version of this dataset, so it's the one to cite rather than a version-specific
+DOI. It's also recorded in `CITATION.cff` and `.zenodo.json`.
 
 Machine-readable metadata is in `CITATION.cff`, so GitHub's **Cite this
 repository** button and most reference managers pick it up directly.
